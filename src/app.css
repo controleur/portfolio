@@ -1,1 +1,7 @@
 @import 'tailwindcss';
+
+body {
+    min-height: 100vh;
+    background: url(wallpapers/images/5120x2880.png) center;
+    background-size: cover;
+}
