@@ -4,6 +4,6 @@
 </script>
 <div class="bg-[url(wallpapers/images/5120x2880.png)] min-h-screen bg-center">
 	<Taskbar />
-	<slot />
+	<!-- <slot /> calls childs -->
 </div>
 
