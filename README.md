@@ -1,38 +1,24 @@
-# sv
+# Portfolio
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Theme
 
-## Creating a project
+KDE Plasma
+https://kde.org/fr/plasma-desktop/
 
-If you're seeing this, you've probably already done this step. Congrats!
+### HIG
+https://develop.kde.org/hig/
 
-```bash
-# create a new project in the current directory
-npx sv create
+### Icons
+https://develop.kde.org/frameworks/breeze-icons/
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Sources
 
-## Developing
+### Maquette
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+https://www.figma.com/design/ftmItJHiG2X6u38nTh5klG/KDE-Plasma-6--UI-Kit--Demo---Community-?node-id=4089-4983&p=f&t=chMJRhY3vzmcUDbS-0
+https://www.figma.com/design/gjuIy1rxU9xHkaJXM0pasK/old-ocean?node-id=0-1&p=f&t=XA1ilgQrIBt6cyND-0
 
-```bash
-npm run dev
+### Wallpapers
+Breeze "Coast" wallpapers for plasma 6.4 from https://github.com/KDE/breeze/tree/master/wallpapers
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+https://invent.kde.org/plasma/breeze
