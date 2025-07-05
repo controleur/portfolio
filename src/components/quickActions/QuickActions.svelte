@@ -1,10 +1,35 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	
+	export let onClose: () => void = () => {};
+	let quickActionsRef: HTMLDivElement;
+
+	onMount(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (quickActionsRef && event.target instanceof Node && !quickActionsRef.contains(event.target)) {
+				onClose();
+			}
+		};
+
+		// Add a small delay to prevent immediate closing when the component mounts
+		setTimeout(() => {
+			document.addEventListener('click', handleClickOutside);
+		}, 100);
+
+		return () => {
+			document.removeEventListener('click', handleClickOutside);
+		};
+	});
+</script>
+
 <div
 	id="tray-opened"
-	class="absolute right-0 bottom-10 h-111 w-111 rounded-tl bg-stone-50/75 backdrop-blur-lg"
+	class="absolute right-1 bottom-10 h-111 w-111 rounded-tl bg-stone-50/75 dark:bg-gray-800/75 backdrop-blur-lg"
+	bind:this={quickActionsRef}
 >
 	<div id="quick-actions-container" class="grid grid-cols-3 gap-2 p-3">
 		<div
-			class="flex flex-col gap-3 rounded border border-gray-300 bg-white p-2 hover:border-blue-400 hover:bg-blue-300 active:bg-blue-400"
+			class="flex flex-col gap-3 rounded border border-gray-300 bg-white p-2 hover:border-blue-400 hover:bg-blue-300 active:bg-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-blue-400 dark:hover:bg-blue-600 dark:active:bg-blue-700"
 		>
 			<svg
 				width="16"
