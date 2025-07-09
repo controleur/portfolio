@@ -11,7 +11,6 @@
 			}
 		};
 
-		// Add a small delay to prevent immediate closing when the component mounts
 		setTimeout(() => {
 			document.addEventListener('click', handleClickOutside);
 		}, 100);

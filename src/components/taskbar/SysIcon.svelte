@@ -1,11 +1,11 @@
-<script>
-	export let icon = '';
-	export let value = '';
-	export let tooltip = '';
-	export let clickable = false;
-	export let onclick = () => {};
+<script lang="ts">
+	export let icon: string = '';
+	export let value: string = '';
+	export let tooltip: string = '';
+	export let clickable: boolean = false;
+	export let onclick: () => void = () => {};
 	
-	function handleClick() {
+	function handleClick(): void {
 		if (clickable) {
 			onclick();
 		}
