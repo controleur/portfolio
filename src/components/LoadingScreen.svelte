@@ -18,7 +18,7 @@
 
 {#if isLoading}
 	<div 
-		class="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center z-50 overflow-hidden"
+		class="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center z-50 overflow-hidden"
 		transition:fade={{ duration: 500 }}
 	>
 
