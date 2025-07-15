@@ -23,7 +23,7 @@
 
 <div
 	id="tray-opened"
-	class="absolute right-1 bottom-10 h-111 w-111 rounded-tl bg-stone-50/75 dark:bg-gray-800/75 backdrop-blur-lg"
+	class="absolute right-1 bottom-10 shadow-2xl h-111 w-111 rounded-t bg-stone-50/75 dark:bg-gray-800/75 backdrop-blur-lg z-[9998]"
 	bind:this={quickActionsRef}
 >
 	<div id="quick-actions-container" class="grid grid-cols-3 gap-2 p-3">
