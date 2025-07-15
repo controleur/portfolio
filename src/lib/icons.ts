@@ -223,5 +223,24 @@ export const ICONS = {
 </defs>
 </svg>
 
-`
-};
+`,
+windowClose: `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 5L13 13M5 13L13 5" stroke="currentColor"/>
+</svg>
+
+`,
+max: `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 11L9 6L4 11" stroke="currentColor"/>
+</svg>
+
+`,
+min: `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 7L9 12L14 7" stroke="currentColor"/>
+</svg>
+
+`,
+refresh: `
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="18" height="18" viewBox="0 0 16 16">
+    <path d="M7 12v-2l-4 3 4 3v-2h2.997A6.006 6.006 0 0 0 16 8h-2a4 4 0 0 1-3.996 4H7zM9 2H6.003A6.006 6.006 0 0 0 0 8h2a4 4 0 0 1 3.996-4H9v2l4-3-4-3v2z" fill-rule="evenodd"/>
+</svg>`
+} as const;
