@@ -2,12 +2,21 @@
 	import '../app.css';
 	import Taskbar from '../components/taskbar/Taskbar.svelte';
 	import LoadingScreen from '../components/LoadingScreen.svelte';
+	import Window from '../components/Window.svelte';
+	import ApplicationContainer from '../components/applications/ApplicationContainer.svelte';
+	import { windowManager, type WindowData } from '../lib/windowManager';
 	import { onMount } from 'svelte';
 	
 	let isLoading = true;
 	let contentLoaded = false;
 	let loadingProgress = 0;
 	let loadingText = "Initializing...";
+	let windows: WindowData[] = [];
+	
+	// Subscribe to window manager
+	windowManager.subscribe(value => {
+		windows = value;
+	});
 	
 	onMount(() => {
 		let imagesLoaded = 0;
@@ -24,6 +33,20 @@
 			setTimeout(() => {
 				isLoading = false;
 				contentLoaded = true;
+				
+				// Open applications at startup for testing
+				setTimeout(() => {
+					windowManager.openWindow("File Explorer", "File Explorer", "fileManager", "");
+					setTimeout(() => {
+						windowManager.openWindow("Terminal", "Terminal", "terminal", "");
+					}, 1000);
+										setTimeout(() => {
+						windowManager.openWindow("Browser", "Browser", "browser", "");
+					}, 1000);
+										setTimeout(() => {
+						windowManager.openWindow("Editor", "Editor", "editor", "");
+					}, 1000);
+				}, 500);
 			}, 800); 
 		};
 		
@@ -95,6 +118,29 @@
 	<div class="bg-[url(/wallpapers/images/5120x2880.png)] min-h-screen bg-center dark:bg-[url(/wallpapers/images_dark/5120x2880.png)] transition-opacity duration-500"
 		 class:opacity-100={!isLoading} 
 		 class:opacity-0={isLoading}>
+		
+		<!-- Windows -->
+		{#each windows as window (window.id)}
+			<Window
+				title={window.title}
+				appIcon={window.appIcon}
+				isActive={window.isActive}
+				isMinimized={window.isMinimized}
+				isMaximized={window.isMaximized}
+				x={window.x}
+				y={window.y}
+				width={window.width}
+				height={window.height}
+				zIndex={window.zIndex}
+				on:close={() => windowManager.closeWindow(window.id)}
+				on:minimize={() => windowManager.minimizeWindow(window.id)}
+				on:maximize={() => windowManager.maximizeWindow(window.id)}
+				on:focus={() => windowManager.focusWindow(window.id)}
+			>
+				<ApplicationContainer appName={window.appName} />
+			</Window>
+		{/each}
+		
 		<Taskbar />
 		<!-- <slot />  -->
 	</div>
