@@ -3,14 +3,16 @@
 	import AppIcon from './AppIcon.svelte';
 	import QuickActions from '../quickActions/QuickActions.svelte';
 	import { ICONS } from '../../lib/icons';
+	import { TASKBAR_ICONS } from '../../lib/taskbarIcons';
 	import { getCurrentTime, isDarkTheme } from '../../lib/misc';
+	import { windowManager } from '../../lib/windowManager';
 	import { onMount } from 'svelte';
 
 	interface App {
 		id: number;
 		name: string;
 		isActive: boolean;
-		icon: keyof typeof ICONS;
+		icon: keyof typeof TASKBAR_ICONS;
 	}
 
 	let currentTime: string = getCurrentTime();
@@ -19,12 +21,36 @@
 	let isSoundMuted: boolean = false;
 	let isDarkMode: boolean = false;
 	
-	const apps: App[] = [
-		{ id: 1, name: "File Explorer", isActive: true, icon: "fileManager" },
-		{ id: 2, name: "Browser", isActive: false, icon: "browser" },
-		{ id: 3, name: "Terminal", isActive: false, icon: "terminal" },
-		{ id: 4, name: "Editor", isActive: false, icon: "editor" }
+	// Available applications with their metadata
+	const availableApps: Omit<App, 'isActive'>[] = [
+		{ id: 1, name: "File Explorer", icon: "fileManager" },
+		{ id: 2, name: "Browser", icon: "browser" },
+		{ id: 3, name: "Terminal", icon: "terminal" },
+		{ id: 4, name: "Editor", icon: "editor" }
 	];
+
+	// Mapping taskbar icons to main icons
+	const iconMapping: Record<keyof typeof TASKBAR_ICONS, keyof typeof ICONS> = {
+		fileManager: "fileManager",
+		browser: "browser", 
+		terminal: "terminal",
+		editor: "editor"
+	};
+	
+	// Calculate apps that have open windows (minimized or not)
+	$: appsWithWindows = availableApps.filter(app => {
+		const hasWindows = $windowManager.some(window => window.appName === app.name);
+		return hasWindows;
+	}).map(app => {
+		// An app is active if it has the currently focused window
+		const hasFocusedWindow = $windowManager.some(window => 
+			window.appName === app.name && window.isActive
+		);
+		return {
+			...app,
+			isActive: hasFocusedWindow
+		};
+	});
 	
 	onMount(() => {
 		isDarkMode = isDarkTheme();
@@ -69,20 +95,48 @@
 	}
 
 	function handleAppClick(appId: number): void {
-		console.log(`App ${appId} clicked`);
+		const app = availableApps.find(a => a.id === appId);
+		if (!app) return;
+		
+		// Check if there are minimized windows for this app
+		const minimizedWindows = $windowManager.filter(window => 
+			window.appName === app.name && window.isMinimized
+		);
+		
+		if (minimizedWindows.length > 0) {
+			// Restore the last minimized window
+			const lastMinimized = minimizedWindows[minimizedWindows.length - 1];
+			windowManager.minimizeWindow(lastMinimized.id); // Toggle minimize (will restore)
+			windowManager.focusWindow(lastMinimized.id);
+		} else {
+			// Check if there are open windows for this app
+			const openWindows = $windowManager.filter(window => 
+				window.appName === app.name && !window.isMinimized
+			);
+			
+			if (openWindows.length > 0) {
+				// Focus the last opened window
+				const lastOpen = openWindows[openWindows.length - 1];
+				windowManager.focusWindow(lastOpen.id);
+			} else {
+				// Open a new window
+				const mainIcon = iconMapping[app.icon];
+				windowManager.openWindow(app.name, app.name, mainIcon, '');
+			}
+		}
 	}
 </script>
 
 <div
 	id="taskbar"
-	class="absolute bottom-2 left-2 right-2 rounded-lg z-40 box-content flex h-10 justify-between border-t border-gray-300/50 bg-white/75 backdrop-blur-lg dark:border-gray-600/50 dark:bg-gray-800/75"
+	class="absolute bottom-2 left-2 right-2 rounded-lg z-[9999] box-content flex h-10 justify-between border-t border-gray-300/50 bg-white/75 backdrop-blur-lg dark:border-gray-600/50 dark:bg-gray-800/75"
 >
 	<div id="taskbarLeft" class="flex">
 		<button id="startBtn" class="flex size-10 p-1 text-gray-900 dark:text-gray-100 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors">
 			{@html ICONS.startMenu}
 		</button>
 		<div id="openedApps" class="flex gap-0.5">
-			{#each apps as app (app.id)}
+			{#each appsWithWindows as app (app.id)}
 				<AppIcon 
 					isActive={app.isActive}
 					appName={app.name}
