@@ -134,13 +134,6 @@
 				title="Tailwind Official Site"
 				class="h-full w-full border-0"
 			></iframe>
-			<div class="p-8">
-				<h1 class="mb-4 text-3xl font-bold text-cyan-600">Tailwind CSS</h1>
-				<p class="mb-4 text-gray-600 dark:text-gray-400">Utility-first CSS framework</p>
-				<div class="rounded bg-cyan-50 p-4 dark:bg-cyan-900/20">
-					<p class="text-sm">Rapidly build modern interfaces with utility classes.</p>
-				</div>
-			</div>
 		{:else}
 			<div class="flex h-full items-center justify-center">
 				<div class="text-center">
