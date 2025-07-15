@@ -199,46 +199,7 @@
 	}
 </script>
 
- <style>
-	/* KDE Plasma-style scrollbar for terminal */
-	.terminal-scroll {
-		scrollbar-width: thin;
-		scrollbar-color: #5e81ac #2e3440;
-	}
-	
-	.terminal-scroll::-webkit-scrollbar {
-		width: 14px;
-		background-color: #2e3440;
-	}
-	
-	.terminal-scroll::-webkit-scrollbar-track {
-		background-color: #2e3440;
-		border-radius: 0;
-		border: none;
-	}
-	
-	.terminal-scroll::-webkit-scrollbar-thumb {
-		background: linear-gradient(180deg, #5e81ac 0%, #434c5e 50%, #5e81ac 100%);
-		border-radius: 3px;
-		border: 1px solid #3b4252;
-		background-clip: padding-box;
-		min-height: 30px;
-	}
-	
-	.terminal-scroll::-webkit-scrollbar-thumb:hover {
-		background: linear-gradient(180deg, #81a1c1 0%, #5e81ac 50%, #81a1c1 100%);
-		border-color: #434c5e;
-	}
-	
-	.terminal-scroll::-webkit-scrollbar-thumb:active {
-		background: linear-gradient(180deg, #88c0d0 0%, #5e81ac 50%, #88c0d0 100%);
-		border-color: #5e81ac;
-	}
-	
-	.terminal-scroll::-webkit-scrollbar-corner {
-		background-color: #2e3440;
-	}
-	
+ <style>	
 	/* Terminal container improvements */
 	.terminal-container {
 		font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
