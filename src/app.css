@@ -1,2 +1,70 @@
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
+/* KDE Plasma-style scrollbars for the entire application */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: #5e81ac #e5e9f0;
+}
+
+
+/* Webkit scrollbar styling - KDE Plasma inspired */
+::-webkit-scrollbar {
+	width: 14px;
+	height: 14px;
+	background-color: #e5e9f0;
+}
+
+::-webkit-scrollbar-track {
+	background: #e5e9f0;
+	border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, #5e81ac 0%, #434c5e 50%, #5e81ac 100%);
+	border-radius: 3px;
+	border: 1px solid #d8dee9;
+	background-clip: padding-box;
+	min-height: 30px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, #81a1c1 0%, #5e81ac 50%, #81a1c1 100%);
+	border-color: #4c566a;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background: linear-gradient(180deg, #88c0d0 0%, #5e81ac 50%, #88c0d0 100%);
+	border-color: #5e81ac;
+}
+
+::-webkit-scrollbar-corner {
+	background: #e5e9f0;
+}
+
+/* Dark mode scrollbars - KDE Plasma dark theme */
+.dark ::-webkit-scrollbar {
+	background-color: #2e3440;
+}
+
+.dark ::-webkit-scrollbar-track {
+	background: #2e3440;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, #5e81ac 0%, #434c5e 50%, #5e81ac 100%);
+	border-color: #3b4252;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, #81a1c1 0%, #5e81ac 50%, #81a1c1 100%);
+	border-color: #434c5e;
+}
+
+.dark ::-webkit-scrollbar-thumb:active {
+	background: linear-gradient(180deg, #88c0d0 0%, #5e81ac 50%, #88c0d0 100%);
+	border-color: #5e81ac;
+}
+
+.dark ::-webkit-scrollbar-corner {
+	background: #2e3440;
+}
