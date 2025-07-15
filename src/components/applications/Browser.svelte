@@ -142,7 +142,7 @@
 						The requested URL does not exist in this simulation.
 					</p>
 					<button
-						on:click={() => navigateTo('https://portfolio.dev')}
+						on:click={() => navigateTo('https://svelte.dev')}
 						class="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
 					>
 						Back to Home
