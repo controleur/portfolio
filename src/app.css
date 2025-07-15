@@ -42,6 +42,10 @@
 }
 
 /* Dark mode scrollbars - KDE Plasma dark theme */
+.dark *
+{
+	scrollbar-color: #5e81ac #2e3440;
+}
 .dark ::-webkit-scrollbar {
 	background-color: #2e3440;
 }
