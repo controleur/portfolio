@@ -5,9 +5,10 @@
 	import { ICONS } from '../../lib/icons';
 
 	const bookmarks = [
-		{ name: 'Portfolio', url: 'https://portfolio.dev' },
+		{ name: 'Portfolio ⭐', url: 'https://portfolio.dev' },
+		{ name: 'Ivory 🎹', url: 'https://studio.ivory-app.com' },
 		{ name: 'Svelte', url: 'https://svelte.dev' },
-		{ name: 'Tailwind', url: 'https://tailwindcss.com' }
+		{ name: 'Tailwind', url: 'https://tailwindcss.com' },
 	];
 
 	function navigateTo(url: string) {
@@ -132,6 +133,12 @@
 			<iframe
 				src="https://tailwindcss.com/"
 				title="Tailwind Official Site"
+				class="h-full w-full border-0"
+			></iframe>
+				{:else if currentUrl === 'https://studio.ivory-app.com'}
+			<iframe
+				src="https://studio.ivory-app.com"
+				title="Ivory Landing Page"
 				class="h-full w-full border-0"
 			></iframe>
 		{:else}
