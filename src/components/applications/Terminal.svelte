@@ -5,22 +5,16 @@
 	];
 	
 	let currentInput = '';
-	let cursorVisible = true;
-	let terminalInput: HTMLInputElement;
+	let terminalInput: HTMLTextAreaElement;
 	let terminalContainer: HTMLDivElement;
 	
 	onMount(() => {
-		// Cursor blinking - synchronized with CSS animation
-		const interval = setInterval(() => {
-			cursorVisible = !cursorVisible;
-		}, 500);
 
 		// Auto-focus the terminal input when component mounts
 		if (terminalInput) {
 			terminalInput.focus();
 		}
 
-		return () => clearInterval(interval);
 	});
 	
 	function handleKeydown(event: KeyboardEvent) {
@@ -42,38 +36,23 @@
 			return;
 		}
 		
-		if (event.key === 'Enter') {
-			if (currentInput.trim()) {
-				executeCommand(currentInput.trim());
-				currentInput = '';
-			} else {
-				terminalOutput = [...terminalOutput, ''];
-			}
-			// Always scroll to bottom after any change
-			scrollToBottom();
-		}
+	   if (event.key === 'Enter') {
+		   event.preventDefault();
+		   if (currentInput.trim()) {
+			   executeCommand(currentInput.trim());
+			   currentInput = '';
+		   } else {
+			   terminalOutput = [...terminalOutput, ''];
+		   }
+		   // Always scroll to bottom after any change
+		   scrollToBottom();
+	   }
 	}
 	
 	function scrollToBottom() {
-		// Multiple approaches to ensure reliable scrolling
 		tick().then(() => {
 			if (terminalContainer) {
-				// Method 1: Direct scroll to max
 				terminalContainer.scrollTop = terminalContainer.scrollHeight;
-				
-				// Method 2: Use requestAnimationFrame for next frame
-				requestAnimationFrame(() => {
-					if (terminalContainer) {
-						terminalContainer.scrollTop = terminalContainer.scrollHeight;
-						
-						// Method 3: Fallback with setTimeout
-						setTimeout(() => {
-							if (terminalContainer) {
-								terminalContainer.scrollTop = terminalContainer.scrollHeight;
-							}
-						}, 1);
-					}
-				});
 			}
 		});
 	}
@@ -98,10 +77,8 @@
 					'  pwd      - Show current directory',
 					'  whoami   - Show username',
 					'  date     - Show current date',
-					'  scroll   - Test scroll function',
 					'  neofetch - Show system info',
 					'  echo     - Echo text back',
-					'  history  - Show command history',
 					'',
 					'Keyboard shortcuts:',
 					'  Ctrl+C   - Interrupt current command',
@@ -160,26 +137,6 @@
 					' .`                                 `/'
 				];
 				break;
-			case 'scroll':
-				terminalOutput = [...terminalOutput, 'Testing scroll...'];
-				// Add multiple lines to test scrolling
-				for (let i = 1; i <= 10; i++) {
-					terminalOutput = [...terminalOutput, `Line ${i} - Lorem ipsum dolor sit amet, consectetur adipiscing elit.`];
-				}
-				break;
-			case 'history':
-				terminalOutput = [...terminalOutput,
-					'  1  help',
-					'  2  ls',
-					'  3  pwd',
-					'  4  whoami',
-					'  5  date',
-					'  6  neofetch',
-					'  7  clear',
-					'  8  scroll',
-					'  9  history'
-				];
-				break;
 			default:
 				// Handle echo command specially
 				if (command.toLowerCase().startsWith('echo ')) {
@@ -216,24 +173,11 @@
 	
 	/* Smooth scrolling with better performance */
 	.terminal-scroll {
+		scrollbar-width: none;
 		scroll-behavior: smooth;
 		overflow-anchor: none; /* Prevents scroll jumping */
 	}
 	
-	/* Terminal cursor improvements - More realistic blinking */
-	.terminal-cursor {
-		animation: blink 1s infinite;
-		background-color: currentColor;
-	}
-	
-	@keyframes blink {
-		0%, 49% { 
-			opacity: 1; 
-		}
-		50%, 100% { 
-			opacity: 0; 
-		}
-	}
 </style>
 
 <div 
@@ -253,26 +197,23 @@
 					   
 					   <!-- Current Input Line -->
 					   <div class="flex mt-2">
-							   <span class="text-green-400 select-none">user@portfolio:~$ </span>
-							   <span class="flex-1 text-green-400 relative">
-									   <input 
-											   bind:this={terminalInput}
-											   bind:value={currentInput}
-											   on:keydown={handleKeydown}
-											   class="w-full bg-transparent outline-none text-green-400 caret-transparent terminal-text"
-											   autocomplete="off"
-											   spellcheck="false"
-											   placeholder=""
-											   aria-label="Terminal command input"
-									   />
-									   <span class="absolute top-0 left-0 pointer-events-none text-green-400">
-											   {currentInput}
-											   <span 
-													   class="terminal-cursor" 
-													   class:invisible={!cursorVisible}
-													   aria-hidden="true"
-											   >█</span>
-									   </span>
+							   <span class="text-green-400 select-none mr-1">user@portfolio:~$</span>
+							   <span class="text-green-400 relative">
+				   <span class="min-h-[1.5em] outline-none bg-transparent terminal-text whitespace-pre-wrap break-all" style="display:inline-block;">
+					   {currentInput}<span class="animate-blink">█</span>
+				   </span>
+				   <textarea
+					   bind:this={terminalInput}
+					   bind:value={currentInput}
+					   on:keydown={handleKeydown}
+					   class="absolute inset-0 w-full h-full opacity-0"
+					   autocomplete="off"
+					   spellcheck="false"
+					   name="terminal-input"
+					   rows="1"
+					   aria-label="Terminal command input"
+					   tabindex="0"
+				   ></textarea>
 							   </span>
 					   </div>
 					   <!-- Bottom spacer for scroll -->
