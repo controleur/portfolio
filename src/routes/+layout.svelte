@@ -130,7 +130,7 @@
 		{/each}
 		
 		<Taskbar />
-		<!-- <slot />  -->
+		<slot /> 
 	</div>
 {/if}
 
