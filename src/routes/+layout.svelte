@@ -33,21 +33,9 @@
 			setTimeout(() => {
 				isLoading = false;
 				contentLoaded = true;
-				
-				// Open applications at startup for testing
-				setTimeout(() => {
-					windowManager.openWindow("File Explorer", "File Explorer", "fileManager", "");
-					setTimeout(() => {
-						windowManager.openWindow("Terminal", "Terminal", "terminal", "");
-					}, 1000);
-										setTimeout(() => {
-						windowManager.openWindow("Browser", "Browser", "browser", "");
-					}, 1000);
-										setTimeout(() => {
-						windowManager.openWindow("Editor", "Editor", "editor", "");
-					}, 1000);
-				}, 500);
-			}, 800); 
+				// Open terminal at startup
+					windowManager.openWindow("Terminal", "Terminal", "terminal", "");
+				}, 1000);
 		};
 		
 		// Preload images

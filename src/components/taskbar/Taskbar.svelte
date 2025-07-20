@@ -2,6 +2,7 @@
 	import SysIcon from './SysIcon.svelte';
 	import AppIcon from './AppIcon.svelte';
 	import QuickActions from './QuickActions.svelte';
+	import StartMenu from './StartMenu.svelte';
 	import { ICONS } from '../../lib/icons';
 	import { TASKBAR_ICONS } from '../../lib/taskbarIcons';
 	import { getCurrentTime, isDarkTheme } from '../../lib/misc';
@@ -17,16 +18,17 @@
 
 	let currentTime: string = getCurrentTime();
 	let showQuickActions: boolean = false;
+	let showStartMenu: boolean = false;
 	let isWifiConnected: boolean = true;
 	let isSoundMuted: boolean = false;
 	let isDarkMode: boolean = false;
 	
 	// Available applications with their metadata
-	const availableApps: Omit<App, 'isActive'>[] = [
-		{ id: 1, name: "File Explorer", icon: "fileManager" },
-		{ id: 2, name: "Browser", icon: "browser" },
-		{ id: 3, name: "Terminal", icon: "terminal" },
-		{ id: 4, name: "Editor", icon: "editor" }
+	const availableApps: Array<{ id: number; name: string; icon: keyof typeof TASKBAR_ICONS; description: string }> = [
+		{ id: 1, name: "File Explorer", icon: "fileManager", description: "Browse your files" },
+		{ id: 2, name: "Browser", icon: "browser", description: "Surf the web" },
+		{ id: 3, name: "Terminal", icon: "terminal", description: "Command line access" },
+		{ id: 4, name: "Editor", icon: "editor", description: "Edit your code" }
 	];
 
 	// Mapping taskbar icons to main icons
@@ -65,6 +67,14 @@
 	function toggleQuickActions(): void {
 		showQuickActions = !showQuickActions;
 	}
+
+	function toggleStartMenu(): void {
+		showStartMenu = !showStartMenu;
+	}
+
+	function closeStartMenu(): void {
+		showStartMenu = false;
+		}
 
 	function closeQuickActions(): void {
 		showQuickActions = false;
@@ -132,7 +142,7 @@
 	class="absolute bottom-2 left-2 right-2 rounded-lg z-[9999] box-content flex h-10 justify-between border-t border-gray-300/50 bg-white/75 backdrop-blur-lg dark:border-gray-600/50 dark:bg-gray-800/75"
 >
 	<div id="taskbarLeft" class="flex">
-		<button id="startBtn" class="flex size-10 p-1 text-gray-900 dark:text-gray-100 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors">
+		<button id="startBtn" class="flex size-10 p-1 text-gray-900 dark:text-gray-100 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors" on:click={toggleStartMenu} aria-label="Open Start Menu">
 			{@html ICONS.startMenu}
 		</button>
 		<div id="openedApps" class="flex gap-0.5">
@@ -179,6 +189,13 @@
 		/>
 	</div>
 	
+	{#if showStartMenu}
+		<StartMenu
+			apps={availableApps}
+			onLaunch={handleAppClick}
+			onClose={closeStartMenu}
+		/>
+	{/if}
 	{#if showQuickActions}
 		<QuickActions onClose={closeQuickActions} />
 	{/if}
