@@ -7,6 +7,10 @@
 	const bookmarks = [
 		{ name: 'Portfolio ⭐', url: 'https://portfolio.dev' },
 		{ name: 'Ivory 🎹', url: 'https://studio.ivory-app.com' },
+		{ name: 'Nina Carducci 📸', url: 'https://controleur.github.io/nina-carducci/' },
+		{ name: 'Booki 📚', url: 'https://controleur.github.io/booki/' },
+		{ name: 'Sophie Bluel 🎨', url: 'https://sophie-bluel-five.vercel.app/' },
+		{ name: 'Kasa 🏠', url: 'https://kasa-five-ebon.vercel.app/' },
 		{ name: 'Svelte', url: 'https://svelte.dev' },
 		{ name: 'Tailwind', url: 'https://tailwindcss.com' },
 	];
@@ -139,6 +143,30 @@
 			<iframe
 				src="https://studio.ivory-app.com"
 				title="Ivory Landing Page"
+				class="h-full w-full border-0"
+			></iframe>
+			{:else if currentUrl === 'https://controleur.github.io/nina-carducci/'}
+			<iframe
+				src="https://controleur.github.io/nina-carducci/"
+				title="Nina Carducci"
+				class="h-full w-full border-0"
+			></iframe>
+			{:else if currentUrl === 'https://controleur.github.io/booki/'}
+			<iframe
+				src="https://controleur.github.io/booki/"
+				title="Booki"
+				class="h-full w-full border-0"
+			></iframe>
+			{:else if currentUrl === 'https://sophie-bluel-five.vercel.app/'}
+			<iframe
+				src="https://sophie-bluel-five.vercel.app/"
+				title="Sophie Bluel's Portfolio"
+				class="h-full w-full border-0"
+			></iframe>
+			{:else if currentUrl === 'https://kasa-five-ebon.vercel.app/'}
+			<iframe
+				src="https://kasa-five-ebon.vercel.app/"
+				title="Kasa"
 				class="h-full w-full border-0"
 			></iframe>
 		{:else}
