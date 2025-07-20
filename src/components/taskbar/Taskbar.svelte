@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SysIcon from './SysIcon.svelte';
 	import AppIcon from './AppIcon.svelte';
-	import QuickActions from '../quickActions/QuickActions.svelte';
+	import QuickActions from './QuickActions.svelte';
 	import { ICONS } from '../../lib/icons';
 	import { TASKBAR_ICONS } from '../../lib/taskbarIcons';
 	import { getCurrentTime, isDarkTheme } from '../../lib/misc';
