@@ -36,14 +36,14 @@ onMount(() => {
   window.addEventListener('keydown', handleKeydown);
   searchInput && searchInput.focus();
   const handleClickOutside = (event: MouseEvent) => {
-			if (starMenuRef && event.target instanceof Node && !starMenuRef.contains(event.target)) {
-				onClose();
-			}
-		};
+      if (starMenuRef && event.target instanceof Node && !starMenuRef.contains(event.target)) {
+        onClose();
+      }
+    };
 
-		setTimeout(() => {
-			document.addEventListener('click', handleClickOutside);
-		}, 100);
+    setTimeout(() => {
+      document.addEventListener('click', handleClickOutside);
+    }, 100);
   return () => {window.removeEventListener('keydown', handleKeydown);
     document.removeEventListener('click', handleClickOutside);
   }
@@ -51,16 +51,8 @@ onMount(() => {
 </script>
 
 <div class="fixed left-2 bottom-14 z-[10000] w-80 rounded-xl shadow-2xl bg-white/90 dark:bg-gray-800/95 border border-gray-300 dark:border-gray-700 flex flex-col overflow-hidden animate-fade-in" bind:this={starMenuRef}>
-  <div class="flex items-center gap-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-    <span class="text-2xl dark:text-gray-300">{@html ICONS.startMenu}</span>
-    <input
-      class="flex-1 ml-2 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none"
-      type="text"
-      placeholder="Search apps..."
-      bind:value={search}
-      bind:this={searchInput}
-      aria-label="Search applications"
-    />
+  <div class="flex flex-col gap-2 px-4 pt-4 pb-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+    <h1 class="text-3xl font-extrabold tracking-wide text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text mb-2 select-none text-center">Portfoli.OS</h1>
   </div>
   <div class="flex-1 overflow-y-auto p-2 bg-white dark:bg-gray-800">
     {#if filteredApps.length === 0}
@@ -84,6 +76,17 @@ onMount(() => {
       </ul>
     {/if}
   </div>
+      <div class="flex gap-2 px-4 pt-4 pb-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+      <span class="text-2xl dark:text-gray-300">{@html ICONS.startMenu}</span>
+      <input
+        class="flex-1 ml-2 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none"
+        type="text"
+        placeholder="Search apps..."
+        bind:value={search}
+        bind:this={searchInput}
+        aria-label="Search applications"
+      />
+    </div>
 </div>
 
 <style>
