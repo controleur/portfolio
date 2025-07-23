@@ -139,7 +139,7 @@
 
 <div
 	id="taskbar"
-	class="absolute bottom-2 left-2 right-2 rounded-lg z-[9999] box-content flex h-10 justify-between border-t border-gray-300/50 bg-white/75 backdrop-blur-lg dark:border-gray-600/50 dark:bg-gray-800/75"
+	class="absolute bottom-2 left-2 right-2 rounded-lg z-[9999] box-content flex h-10 justify-between bg-white/75 backdrop-blur-lg dark:border-gray-600/50 dark:bg-gray-800/75"
 >
 	<div id="taskbarLeft" class="flex">
 		<button id="startBtn" class="flex size-10 p-1 text-gray-900 dark:text-gray-100 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors" on:click={toggleStartMenu} aria-label="Open Start Menu">

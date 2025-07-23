@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { ICONS } from '../lib/icons';
+	import { browser } from '$app/environment';
 	
 	export let title: string = "Untitled Window";
 	type IconKey = keyof typeof ICONS;
@@ -28,15 +29,28 @@
 	let currentWidth: number;
 	let currentHeight: number;
 	
+	function isMobile() {
+		if (!browser) return false;
+		return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	}
+	
 	// Initialize ONLY on component mount
 	onMount(() => {
-		currentX = x;
-		currentY = y;
-		currentWidth = width;
-		currentHeight = height;
+		if (isMobile()) {
+			currentX = 0;
+			currentY = 0;
+			currentWidth = window.innerWidth;
+			currentHeight = window.innerHeight - 60;
+		} else {
+			currentX = x;
+			currentY = y;
+			currentWidth = width;
+			currentHeight = height;
+		}
 	});
 	
 	function handleMouseDown(event: MouseEvent): void {
+		if (isMobile()) return; // Disable dragging on mobile
 		// Check if click is not on a button
 		const target = event.target as HTMLElement;
 		if (target.tagName === 'BUTTON' || target.closest('button')) {
@@ -53,6 +67,7 @@
 	}
 	
 	function handleMouseMove(event: MouseEvent): void {
+		if (isMobile()) return; // Disable dragging on mobile
 		if (isDragging) {
 			currentX = event.clientX - dragStartX;
 			currentY = event.clientY - dragStartY;
@@ -74,6 +89,15 @@
 	}
 	
 	function maximize(): void {
+		if (isMobile()) {
+			isMaximized = true;
+			currentX = 0;
+			currentY = 0;
+			currentWidth = window.innerWidth;
+			currentHeight = window.innerHeight - 60;
+			dispatch('maximize');
+			return;
+		}
 		isMaximized = !isMaximized;
 		if (isMaximized) {
 			currentX = 0;
@@ -113,16 +137,16 @@
 <svelte:window on:mousemove={handleMouseMove} on:mouseup={handleMouseUp} />
 
 <div
-	   bind:this={windowRef}
-	   class="absolute select-none shadow-2xl rounded-lg overflow-hidden
-			  bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50
-			  {isActive ? 'ring-2 ring-blue-500/50' : ''} 
-			  {isMinimized ? 'hidden' : ''} flex flex-col h-full min-h-0"
-	   style="left: {currentX}px; top: {currentY}px; width: {currentWidth}px; height: {currentHeight}px; z-index: {zIndex};"
-	   on:mousedown={focus}
-	   role="dialog"
-	   tabindex="0"
-	   aria-label={title}
+    bind:this={windowRef}
+    class="absolute select-none shadow-2xl rounded-lg overflow-hidden
+        bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50
+        {isActive ? 'ring-2 ring-blue-500/50' : ''} 
+        {isMinimized ? 'hidden' : ''} flex flex-col h-full min-h-0"
+    style="left: {isMobile() ? 0 : currentX}px; top: {isMobile() ? 0 : currentY}px; width: {isMobile() ? '100vw' : currentWidth + 'px'}; height: {isMobile() ? 'calc(100vh - 60px)' : currentHeight + 'px'}; z-index: {zIndex};"
+    on:mousedown={focus}
+    role="dialog"
+    tabindex="0"
+    aria-label={title}
 >
 	<!-- Title bar -->
 	<div 

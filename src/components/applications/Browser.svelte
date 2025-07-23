@@ -1,5 +1,5 @@
 <script lang="ts">
-	let currentUrl = 'https://svelte.dev';
+	let currentUrl = 'https://controleur.github.io/booki/';
 	let addressInput = currentUrl;
 	let isLoading = false;
 	import { ICONS } from '../../lib/icons';
@@ -8,11 +8,10 @@
 		{ name: 'Portfolio ⭐', url: 'https://portfolio.dev' },
 		{ name: 'Ivory 🎹', url: 'https://studio.ivory-app.com' },
 		{ name: 'Nina Carducci 📸', url: 'https://controleur.github.io/nina-carducci/' },
-		{ name: 'Booki 📚', url: 'https://controleur.github.io/booki/' },
+		{ name: 'Booki 🛏️', url: 'https://controleur.github.io/booki/' },
 		{ name: 'Sophie Bluel 🎨', url: 'https://sophie-bluel-five.vercel.app/' },
 		{ name: 'Kasa 🏠', url: 'https://kasa-five-ebon.vercel.app/' },
-		{ name: 'Svelte', url: 'https://svelte.dev' },
-		{ name: 'Tailwind', url: 'https://tailwindcss.com' },
+		{ name: 'Mon Vieux Grimoire API Docs 📚', url: 'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs' }
 	];
 
 	function navigateTo(url: string) {
@@ -127,18 +126,6 @@
 				title="This Portfolio"
 				class="h-full w-full border-0"
 			></iframe>
-		{:else if currentUrl === 'https://svelte.dev'}
-			<iframe
-				src="https://svelte.dev"
-				title="Svelte Official Site"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://tailwindcss.com'}
-			<iframe
-				src="https://tailwindcss.com/"
-				title="Tailwind Official Site"
-				class="h-full w-full border-0"
-			></iframe>
 				{:else if currentUrl === 'https://studio.ivory-app.com'}
 			<iframe
 				src="https://studio.ivory-app.com"
@@ -167,6 +154,12 @@
 			<iframe
 				src="https://kasa-five-ebon.vercel.app/"
 				title="Kasa"
+				class="h-full w-full border-0"
+			></iframe>
+			{:else if currentUrl === 'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs'}
+			<iframe
+				src="https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs"
+				title="Mon Vieux Grimoire API Docs"
 				class="h-full w-full border-0"
 			></iframe>
 		{:else}
