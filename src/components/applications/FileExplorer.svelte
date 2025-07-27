@@ -25,7 +25,7 @@
 		return size || '--';
 	}
 	
-	function handleDoubleClick(file: FileItem) {
+	function handleClick(file: FileItem) {
 		if (file.type === 'folder') {
 			console.log(`Navigate to ${file.name}`);
 		} else {
@@ -73,8 +73,8 @@
 					class="grid grid-cols-4 gap-4 p-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer group transition-colors"
 					role="button"
 					tabindex="0"
-					on:dblclick={() => handleDoubleClick(file)}
-					on:keydown={(e) => e.key === 'Enter' && handleDoubleClick(file)}
+					on:click={() => handleClick(file)}
+					on:keydown={(e) => e.key === 'Enter' && handleClick(file)}
 				>
 					<div class="flex items-center gap-2">
 						<span class="text-lg">{file.icon}</span>
