@@ -16,7 +16,12 @@
 	export let height: number = 480;
 	export let zIndex: number = 10;
 	
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{
+		close: void;
+		minimize: void;
+		maximize: void;
+		focus: void;
+	}>();
 	
 	let isDragging: boolean = false;
 	let isResizing: boolean = false;
@@ -177,7 +182,7 @@
 				aria-label="Minimize"
 			>
 				<div class="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200">
-					{@html ICONS.min}
+					{@html getIcon('min')}
 				</div>
 			</button>
 			<button 
@@ -186,7 +191,7 @@
 				aria-label={isMaximized ? "Restore" : "Maximize"}
 			>
 				<div class="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200">
-					{@html ICONS.max}
+					{@html getIcon('max')}
 				</div>
 			</button>
 			<button 
@@ -195,7 +200,7 @@
 				aria-label="Close"
 			>
 				<div class="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-white">
-					{@html ICONS.windowClose}
+					{@html getIcon('windowClose')}
 				</div>
 			</button>
 		</div>

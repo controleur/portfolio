@@ -4,8 +4,8 @@
 	import QuickActions from './QuickActions.svelte';
 	import StartMenu from './StartMenu.svelte';
 	import { onMount } from 'svelte';
-	import { getCurrentTime, ICONS } from '$lib';
-	import { windows, openWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow, updateWindow, apps, isDarkMode, isSoundMuted, currentLanguage, toggleTheme, toggleSound, toggleLanguage } from '$lib/stores';
+	import { getCurrentTime, ICONS, getIcon } from '$lib';
+	import { windows, openWindow, focusWindow, minimizeWindow, apps, isDarkMode, isSoundMuted, currentLanguage, toggleTheme, toggleSound, toggleLanguage } from '$lib/stores';
 	import type { App } from '$lib';
 	import { _ } from 'svelte-i18n';
 
@@ -83,7 +83,7 @@
 >
 	<div id="taskbarLeft" class="flex">
 		<button id="startBtn" class="flex size-10 p-1 text-gray-900 dark:text-gray-100 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors" on:click={toggleStartMenu} aria-label="Open Start Menu">
-			{@html ICONS.startMenu}
+			{@html getIcon('startMenu')}
 		</button>
 		<div id="openedApps" class="flex gap-0.5">
 			{#each appsWithWindows as app (app.id)}
@@ -98,13 +98,13 @@
 	</div>
 	<div id="tray" class="flex gap-2 p-2 pr-3">
 		<SysIcon
-			icon={$isDarkMode ? ICONS.darkMode : ICONS.lightMode}
+			icon={$isDarkMode ? getIcon('darkMode') : getIcon('lightMode')}
 			tooltip={$_('taskbar.toggleTheme')}
 			clickable={true}
 			onclick={toggleTheme}
 		/>
 		<SysIcon
-			icon={$isSoundMuted ? ICONS.soundMuted : ICONS.sound}
+			icon={$isSoundMuted ? getIcon('soundMuted') : getIcon('sound')}
 			tooltip={$_('taskbar.volume')}
 			clickable={true}
 			onclick={toggleSound}
@@ -116,7 +116,7 @@
 			onclick={toggleLanguage}
 		/>
 		<SysIcon
-			icon={ICONS.more}
+			icon={getIcon('more')}
 			tooltip={$_('taskbar.quickActions')}
 			clickable={true}
 			onclick={toggleQuickActions}

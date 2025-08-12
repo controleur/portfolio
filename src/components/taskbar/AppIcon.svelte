@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { ICONS } from '$lib/icons';
-	import { getIcon } from '../../lib/icons';
-	import { openWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow } from '$lib/stores/windowStore';
-	
+	import { getIcon, ICONS } from '$lib';	
 	export let isActive: boolean = false;
 	export let appName: string = "Application";
 	export let iconName: keyof typeof ICONS = "fileManager";

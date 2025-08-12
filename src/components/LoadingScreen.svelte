@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ICONS } from '$lib/icons';
+	import { ICONS, getIcon } from '$lib/icons';
 	import { fade, scale } from 'svelte/transition';
 	import { _ } from 'svelte-i18n';
 	export let isLoading: boolean = true;
@@ -30,7 +30,7 @@
 			<div class="relative mb-8">
                 <div class="relative mx-auto animate-pulse">
 					<div class="flex justify-center items-center transition-transform duration-300">
-						{@html ICONS.plasmaColor}
+						{@html getIcon('plasmaColor')}
 					</div>
 				</div>
 				

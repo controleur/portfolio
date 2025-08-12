@@ -2,7 +2,7 @@
 	let currentUrl = 'https://controleur.github.io/booki/';
 	let addressInput = currentUrl;
 	let isLoading = false;
-	import { ICONS } from '$lib/icons';
+	import { getIcon } from '$lib/icons';
 
 	const bookmarks = [
 		{ name: 'Portfolio ⭐', url: 'https://portfolio.dev' },
@@ -67,7 +67,7 @@
 			on:click={refresh}
 			class="rounded p-2 w-9 h-9 flex items-center justify-center text-gray-600 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-600"
 		>
-			{@html ICONS.refresh}
+			{@html getIcon('refresh')}
 		</button>
 
 		<!-- Address Bar -->
