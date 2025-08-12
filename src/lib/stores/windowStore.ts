@@ -7,17 +7,23 @@ export const windows = writable<WindowData[]>(initial);
 
 export function openWindow(appName: string, title: string, appIcon: keyof typeof ICONS, content = '') {
   windows.update(wins => {
-  // Check if a window for this app already exists
+    // Check if a window for this app already exists
     const existing = wins.find(w => w.appName === appName);
     if (existing) {
-  // Focus the existing window
+      // Calcule le zIndex maximal
+      const maxZ = Math.max(...wins.map(w => w.zIndex), 100);
+      const updatedWindow: WindowData = {
+        ...existing,
+        content,
+        isActive: true,
+        isMinimized: false,
+        zIndex: maxZ + 1
+      };
       return wins.map(w =>
-        w.appName === appName
-          ? { ...w, isActive: true, isMinimized: false }
-          : { ...w, isActive: false }
+        w.appName === appName ? updatedWindow : { ...w, isActive: false }
       );
     }
-  // Otherwise, create a new window
+    // Otherwise, create a new window
     const id = `window-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const offset = wins.length * 30;
     const newWindow: WindowData = {
@@ -35,7 +41,7 @@ export function openWindow(appName: string, title: string, appIcon: keyof typeof
       isMaximized: false,
       isActive: true
     };
-  // Deactivate others
+    // Deactivate others
     return [...wins.map(w => ({ ...w, isActive: false })), newWindow];
   });
 }
@@ -69,4 +75,14 @@ export function maximizeWindow(id: string) {
 
 export function updateWindow(id: string, updates: Partial<WindowData>) {
   windows.update(wins => wins.map(w => w.id === id ? { ...w, ...updates } : w));
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('open-virtual-browser', (e: Event) => {
+    const detail = (e as CustomEvent).detail;
+    if (detail && detail.url) {
+      // Le titre reste 'Browser', seul le content (URL) change
+      openWindow('Browser', 'Browser', 'browser', detail.url);
+    }
+  });
 }

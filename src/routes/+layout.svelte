@@ -103,7 +103,7 @@
 		 class:opacity-0={isLoading}>
 		
 		<!-- Windows -->
-		{#each $windows as window (window.id)}
+		{#each $windows as window (`${window.id}-${window.content}`)}
 			<Window
 				title={window.title}
 				appIcon={window.appIcon}
@@ -120,7 +120,7 @@
 				on:maximize={() => maximizeWindow(window.id)}
 				on:focus={() => focusWindow(window.id)}
 			>
-				<ApplicationContainer appName={window.appName} />
+				<ApplicationContainer appName={window.appName} content={window.content} />
 			</Window>
 		{/each}
 		

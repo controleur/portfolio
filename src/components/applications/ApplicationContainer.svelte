@@ -6,7 +6,9 @@ import Editor from './Editor.svelte';
 
 type AppKey = 'Explorer' | 'Terminal' | 'Browser' | 'Editor';
 export let appName: string;
-const components: Record<AppKey, typeof Explorer> = {
+export let content: string = '';
+import type { SvelteComponent } from 'svelte';
+const components: Record<AppKey, typeof SvelteComponent<any>> = {
 	Explorer,
 	Terminal,
 	Browser,
@@ -18,7 +20,11 @@ $: component = components[appName as AppKey];
 
 <div class="h-full min-h-0 flex flex-col text-gray-700 dark:text-gray-300">
 	{#if component}
-		<svelte:component this={component} />
+		{#if appName === 'Browser'}
+			<svelte:component this={component} content={content} />
+		{:else}
+			<svelte:component this={component} />
+		{/if}
 	{:else}
 		<p>Unknown application: {appName}</p>
 	{/if}

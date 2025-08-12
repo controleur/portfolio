@@ -1,97 +1,153 @@
 <script lang="ts">
-	interface FileItem {
-		name: string;
-		type: 'folder' | 'file' | 'image' | 'audio' | 'video';
-		size?: string;
-		modified: string;
-		icon?: string;
-	}
-	
-	const currentPath = 'C:\\Users\\User\\Documents';
-	
-	const files: FileItem[] = [
-		{ name: 'Projects', type: 'folder', modified: '2024-01-15', icon: '📁' },
-		{ name: 'Portfolio', type: 'folder', modified: '2024-01-20', icon: '📁' },
-		{ name: 'Documents', type: 'folder', modified: '2024-01-10', icon: '📁' },
-		{ name: 'Pictures', type: 'folder', modified: '2024-01-12', icon: '📁' },
-		{ name: 'README.md', type: 'file', size: '2.3 KB', modified: '2024-01-18', icon: '📄' },
-		{ name: 'package.json', type: 'file', size: '1.2 KB', modified: '2024-01-19', icon: '📄' },
-		{ name: 'screenshot.png', type: 'image', size: '845 KB', modified: '2024-01-16', icon: '🖼️' },
-		{ name: 'demo.mp4', type: 'video', size: '12.5 MB', modified: '2024-01-14', icon: '🎬' },
-		{ name: 'music.mp3', type: 'audio', size: '5.2 MB', modified: '2024-01-12', icon: '🎵' }
-	];
-	
-	function formatSize(size?: string) {
-		return size || '--';
-	}
-	
-	function handleClick(file: FileItem) {
-		if (file.type === 'folder') {
-			console.log(`Navigate to ${file.name}`);
-		} else {
-			console.log(`Open ${file.name}`);
-		}
-	}
+import { bookmarks } from '$lib/stores/bookmarkStore';
+import type { Bookmark } from '$lib/stores/bookmarkStore';
+
+interface FileItem {
+    name: string;
+    type: 'folder' | 'file' | 'link';
+    icon: string;
+    content?: string;
+    url?: string;
+}
+
+
+let currentPath: string = 'Projects';
+let selectedProject: Bookmark | null = null;
+let fileContent: string | null = null;
+let history: (Bookmark | null)[] = [null];
+let historyIndex = 0;
+
+function goBack() {
+    if (historyIndex > 0) {
+        historyIndex--;
+        selectedProject = history[historyIndex];
+        fileContent = null;
+    }
+}
+
+function goForward() {
+    if (historyIndex < history.length - 1) {
+        historyIndex++;
+        selectedProject = history[historyIndex];
+        fileContent = null;
+    }
+}
+
+function getProjectFiles(project: Bookmark): FileItem[] {
+    return [
+        {
+            name: 'about.txt',
+            type: 'file',
+            icon: '📄',
+            content: project.description,
+        },
+        {
+            name: `${project.name}.lnk`,
+            type: 'link',
+            icon: '🔗',
+            url: project.url,
+        },
+        project.github
+            ? {
+                    name: 'github.url',
+                    type: 'link',
+                    icon: '🌐',
+                    url: project.github,
+                }
+            : null,
+    ].filter(Boolean) as FileItem[];
+}
+
+function handleFolderClick(project: Bookmark) {
+    // Si on navigue vers un nouveau projet, tronque l'historique
+    if (historyIndex < history.length - 1) {
+        history = history.slice(0, historyIndex + 1);
+    }
+    history.push(project);
+    historyIndex = history.length - 1;
+    selectedProject = project;
+    fileContent = null;
+}
+
+function handleFileClick(file: FileItem) {
+    if (file.type === 'file') {
+        fileContent = file.content || '';
+    } else if (file.type === 'link' && file.url) {
+        if (file.name.endsWith('.lnk')) {
+            window.dispatchEvent(new CustomEvent('open-virtual-browser', { detail: { url: file.url } }));
+        } else if (file.name === 'github.url') {
+            window.open(file.url, '_blank');
+        }
+    }
+}
 </script>
 
 <div class="flex flex-col h-full bg-white dark:bg-gray-800">
-	<!-- Toolbar -->
-	<div class="flex items-center gap-2 p-3 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
-		<button class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-			← Back
-		</button>
-		<button class="px-3 py-1.5 text-sm bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
-			→ Forward
-		</button>
-		<div class="flex-1 mx-3">
-			<input 
-				type="text" 
-				value={currentPath}
-				class="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-500 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-				readonly
-			/>
-		</div>
-		<button class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
-			New Folder
-		</button>
-	</div>
-	
-	<!-- File List -->
-	<div class="flex-1 overflow-auto">
-		<!-- Header -->
-		<div class="grid grid-cols-4 gap-4 p-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-			<div>Name</div>
-			<div>Type</div>
-			<div>Size</div>
-			<div>Modified</div>
-		</div>
-		
-		<!-- Files -->
-		<div class="divide-y divide-gray-100 dark:divide-gray-600">
-			{#each files as file}
-				<div 
-					class="grid grid-cols-4 gap-4 p-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer group transition-colors"
-					role="button"
-					tabindex="0"
-					on:click={() => handleClick(file)}
-					on:keydown={(e) => e.key === 'Enter' && handleClick(file)}
-				>
-					<div class="flex items-center gap-2">
-						<span class="text-lg">{file.icon}</span>
-						<span class="text-sm truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-gray-200">{file.name}</span>
-					</div>
-					<div class="text-sm text-gray-500 dark:text-gray-400 capitalize">
-						{file.type === 'folder' ? 'Folder' : 'File'}
-					</div>
-					<div class="text-sm text-gray-500 dark:text-gray-400">{formatSize(file.size)}</div>
-					<div class="text-sm text-gray-500 dark:text-gray-400">{file.modified}</div>
-				</div>
-			{/each}
-		</div>
-	</div>
-	
-	<!-- Status Bar -->
-	<div class="p-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
-		{files.length} item(s) | {files.filter(f => f.type === 'folder').length} folder(s) | {files.filter(f => f.type !== 'folder').length} file(s)
-	</div>
+    <!-- Toolbar -->
+        <div class="flex items-center gap-2 p-3 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+            <button class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors" on:click={goBack} disabled={historyIndex === 0}>
+                ← Back
+            </button>
+            <button class="px-3 py-1.5 text-sm bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors" on:click={goForward} disabled={historyIndex === history.length - 1}>
+                → Forward
+            </button>
+            <div class="flex-1 mx-3">
+                <input 
+                    type="text" 
+                    value={selectedProject ? selectedProject.name : 'Projects'}
+                    class="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-500 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    readonly
+                />
+            </div>
+            {#if selectedProject}
+                <button class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors" on:click={() => { selectedProject = null; fileContent = null; history.push(null); historyIndex = history.length - 1; }}>
+                    ← Retour aux projets
+                </button>
+            {/if}
+            <button class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                New Folder
+            </button>
+        </div>
+
+        <!-- Vue dossiers projets -->
+        <div class="flex-1 overflow-auto">
+            {#if !selectedProject}
+                <div class="p-4">
+                    <ul>
+                        {#each $bookmarks as project}
+                            <li class="mb-2">
+                                <button class="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors w-full text-left" on:click={() => handleFolderClick(project)}>
+                                    <span>📁</span>
+                                    <span class="font-semibold">{project.name}</span>
+                                </button>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+            {:else}
+                <div class="p-4">
+                    <ul>
+                        {#each getProjectFiles(selectedProject) as file}
+                            <li class="mb-2">
+                                <button class="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors w-full text-left" on:click={() => handleFileClick(file)}>
+                                    <span>{file.icon}</span>
+                                    <span>{file.name}</span>
+                                </button>
+                            </li>
+                        {/each}
+                    </ul>
+                    {#if fileContent}
+                        <div class="mt-6 p-4 bg-white dark:bg-gray-900 rounded shadow">
+                            <h3 class="font-bold mb-2">about.txt</h3>
+                            <pre class="whitespace-pre-wrap text-sm">{fileContent}</pre>
+                        </div>
+                    {/if}
+                </div>
+            {/if}
+        </div>
+
+    <!-- Status Bar -->
+    <div class="p-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
+        {$bookmarks.length} projet(s)
+    </div>
 </div>

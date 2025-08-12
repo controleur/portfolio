@@ -1,49 +1,34 @@
 <script lang="ts">
-	let currentUrl = 'https://controleur.github.io/booki/';
-	let addressInput = currentUrl;
-	let isLoading = false;
-	import { getIcon } from '$lib/icons';
+				export let content = '';
+				import { getIcon } from '$lib/icons';
+				import { bookmarks } from '$lib/stores/bookmarkStore';
+				import { onMount } from 'svelte';
 
-	const bookmarks = [
-		{ name: 'Portfolio ⭐', url: 'https://portfolio.dev' },
-		{ name: 'Ivory 🎹', url: 'https://studio.ivory-app.com' },
-		{ name: 'Nina Carducci 📸', url: 'https://controleur.github.io/nina-carducci/' },
-		{ name: 'Booki 🛏️', url: 'https://controleur.github.io/booki/' },
-		{ name: 'Sophie Bluel 🎨', url: 'https://sophie-bluel-five.vercel.app/' },
-		{ name: 'Kasa 🏠', url: 'https://kasa-five-ebon.vercel.app/' },
-		{ name: 'Mon Vieux Grimoire API Docs 📚', url: 'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs' }
-	];
+				let currentUrl = '';
+				let addressInput = '';
+				let isLoading = false;
 
-	function navigateTo(url: string) {
-		isLoading = true;
-		currentUrl = url;
-		addressInput = url;
+				onMount(() => {
+					currentUrl = content || 'https://controleur.github.io/booki/';
+					addressInput = currentUrl;
+				});
 
-		setTimeout(() => {
-			isLoading = false;
-		}, 800);
-	}
+					function navigateTo(url: string) {
+						isLoading = true;
+						currentUrl = addressInput = url;
+						setTimeout(() => isLoading = false, 800);
+					}
 
-	function handleAddressSubmit() {
-		if (addressInput.trim()) {
-			navigateTo(addressInput.trim());
+		function handleAddressSubmit() {
+			if (addressInput.trim()) navigateTo(addressInput.trim());
 		}
-	}
 
-	function goBack() {
-		console.log('Navigate back');
-	}
-
-	function goForward() {
-		console.log('Navigate forward');
-	}
-
-	function refresh() {
-		isLoading = true;
-		setTimeout(() => {
-			isLoading = false;
-		}, 500);
-	}
+		function goBack() {}
+		function goForward() {}
+		function refresh() {
+			isLoading = true;
+			setTimeout(() => isLoading = false, 500);
+		}
 </script>
 
 <div class="flex h-full flex-col bg-white dark:bg-gray-800">
@@ -99,7 +84,7 @@
 	<div
 		class="flex gap-2 border-b border-gray-200 bg-gray-100 p-2 dark:border-gray-600 dark:bg-gray-700"
 	>
-		{#each bookmarks as bookmark}
+		{#each $bookmarks as bookmark}
 			<button
 				on:click={() => navigateTo(bookmark.url)}
 				class="rounded bg-white px-3 py-1 text-xs text-gray-700 transition-colors hover:bg-gray-50 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500"
