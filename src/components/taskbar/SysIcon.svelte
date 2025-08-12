@@ -4,7 +4,7 @@
 	export let tooltip: string = '';
 	export let clickable: boolean = false;
 	export let onclick: () => void = () => {};
-	
+
 	function handleClick(): void {
 		if (clickable) {
 			onclick();
@@ -13,8 +13,8 @@
 </script>
 
 {#if clickable}
-	<button 
-		class="flex items-center gap-1 px-1 py-0.5 rounded transition-colors border-none bg-transparent font-inherit hover:bg-black/10 dark:hover:bg-white/10 focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 text-gray-900 dark:text-gray-100" 
+	<button
+		class="font-inherit flex items-center gap-1 rounded border-none bg-transparent px-1 py-0.5 text-gray-900 transition-colors hover:bg-black/10 focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 dark:text-gray-100 dark:hover:bg-white/10"
 		title={tooltip}
 		on:click={handleClick}
 	>
@@ -24,8 +24,8 @@
 		{/if}
 	</button>
 {:else}
-	<div 
-		class="flex items-center gap-1 px-1 py-0.5 rounded transition-colors text-gray-900 dark:text-gray-100" 
+	<div
+		class="flex items-center gap-1 rounded px-1 py-0.5 text-gray-900 transition-colors dark:text-gray-100"
 		title={tooltip}
 	>
 		{@html icon}
@@ -34,5 +34,3 @@
 		{/if}
 	</div>
 {/if}
-
-
