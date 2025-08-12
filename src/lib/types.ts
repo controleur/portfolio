@@ -4,6 +4,7 @@ export interface App {
 	name: string;
 	icon: keyof typeof ICONS;
 	description: string;
+	internalName: string;
 }
 
 export interface WindowData {

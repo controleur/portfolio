@@ -1,17 +1,21 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
+	import { _ } from 'svelte-i18n';
 
-	let terminalOutput: string[] = [
-		'Welcome to Portfolio Terminal!',
-		'Type "help" to see available commands.',
-		''
-	];
-
+	let terminalOutput: string[] = [];
+	
 	let currentInput = '';
 	let terminalInput: HTMLTextAreaElement;
 	let terminalContainer: HTMLDivElement;
 
 	onMount(() => {
+		// Initialize with localized welcome message
+		terminalOutput = [
+			$_('terminal.welcome'),
+			$_('terminal.helpHint'),
+			''
+		];
+		
 		if (terminalInput) {
 			terminalInput.focus();
 		}
@@ -69,19 +73,19 @@
 			case 'help':
 				terminalOutput = [
 					...terminalOutput,
-					'Available commands:',
-					'  help     - Show this help',
-					'  clear    - Clear the terminal',
-					'  ls       - List files',
-					'  pwd      - Show current directory',
-					'  whoami   - Show username',
-					'  date     - Show current date',
-					'  neofetch - Show system info',
-					'  echo     - Echo text back',
+					$_('terminal.helpTitle'),
+					`  help     - ${$_('terminal.helpCommands.help')}`,
+					`  clear    - ${$_('terminal.helpCommands.clear')}`,
+					`  ls       - ${$_('terminal.helpCommands.ls')}`,
+					`  pwd      - ${$_('terminal.helpCommands.pwd')}`,
+					`  whoami   - ${$_('terminal.helpCommands.whoami')}`,
+					`  date     - ${$_('terminal.helpCommands.date')}`,
+					`  neofetch - ${$_('terminal.helpCommands.neofetch')}`,
+					`  echo     - ${$_('terminal.helpCommands.echo')}`,
 					'',
-					'Keyboard shortcuts:',
-					'  Ctrl+C   - Interrupt current command',
-					'  Ctrl+L   - Clear screen'
+					$_('terminal.keyboardShortcuts'),
+					`  Ctrl+C   - ${$_('terminal.shortcuts.ctrlC')}`,
+					`  Ctrl+L   - ${$_('terminal.shortcuts.ctrlL')}`
 				];
 				break;
 			case 'clear':
@@ -146,7 +150,7 @@
 					const text = command.slice(5);
 					terminalOutput = [...terminalOutput, text];
 				} else {
-					terminalOutput = [...terminalOutput, `bash: ${command}: command not found`];
+					terminalOutput = [...terminalOutput, `bash: ${command}: ${$_('terminal.commandNotFound')}`];
 				}
 		}
 
@@ -200,8 +204,8 @@
 	<div
 		class="flex-shrink-0 border-t border-gray-700 bg-gray-900 px-4 py-2 text-xs text-gray-400 select-none"
 	>
-		<span class="font-medium">Terminal</span> - Type 'help' to see available commands |
-		<span class="text-gray-500">Ctrl+C to interrupt | Ctrl+L to clear</span>
+		<span class="font-medium">Terminal</span> - {$_('terminal.statusBar')} |
+		<span class="text-gray-500">{$_('terminal.statusShortcuts')}</span>
 	</div>
 </div>
 

@@ -22,7 +22,7 @@
 	function handleLaunch(appId: number) {
 		const app = availableApps.find((a) => a.id === appId);
 		if (app) {
-			openWindow(app.name, app.name, app.icon, '');
+			openWindow(app.internalName, app.name, app.icon, '');
 			onLaunch?.(appId);
 			onClose?.();
 		}

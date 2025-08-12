@@ -20,5 +20,70 @@
 	"startmenu": {
 		"search": "Search apps...",
 		"noResults": "No results found."
+	},
+	"browser": {
+		"urlPlaceholder": "Enter a URL...",
+		"goButton": "Go",
+		"loading": "Loading...",
+		"pageNotFound": "Page not found",
+		"pageNotFoundDescription": "The requested URL does not exist in this simulation.",
+		"backToHome": "Back to Home"
+	},
+	"terminal": {
+		"welcome": "Welcome to Portfolio Terminal!",
+		"helpHint": "Type \"help\" to see available commands.",
+		"commandNotFound": "command not found",
+		"helpTitle": "Available commands:",
+		"helpCommands": {
+			"help": "Show this help",
+			"clear": "Clear the terminal",
+			"ls": "List files",
+			"pwd": "Show current directory",
+			"whoami": "Show username",
+			"date": "Show current date",
+			"neofetch": "Show system info",
+			"echo": "Echo text back"
+		},
+		"keyboardShortcuts": "Keyboard shortcuts:",
+		"shortcuts": {
+			"ctrlC": "Interrupt current command",
+			"ctrlL": "Clear screen"
+		},
+		"statusBar": "Type 'help' to see available commands",
+		"statusShortcuts": "Ctrl+C to interrupt | Ctrl+L to clear"
+	},
+	"explorer": {
+		"back": "Back",
+		"forward": "Forward",
+		"backToProjects": "Back to projects",
+		"newFolder": "New Folder",
+		"projects": "Projects",
+		"projectsCount": "{count} project(s)"
+	},
+	"apps": {
+		"explorer": {
+			"name": "Explorer",
+			"description": "Browse your files"
+		},
+		"browser": {
+			"name": "Browser",
+			"description": "Surf the web"
+		},
+		"terminal": {
+			"name": "Terminal",
+			"description": "Command line access"
+		},
+		"editor": {
+			"name": "Editor",
+			"description": "Edit your code"
+		},
+		"settings": {
+			"name": "Settings",
+			"description": "Configure your system"
+		},
+		"about": {
+			"name": "About",
+			"description": "Learn more about this project"
+		}
 	}
 }
