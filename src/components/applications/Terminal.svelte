@@ -3,19 +3,15 @@
 	import { _ } from 'svelte-i18n';
 
 	let terminalOutput: string[] = [];
-	
+
 	let currentInput = '';
 	let terminalInput: HTMLTextAreaElement;
 	let terminalContainer: HTMLDivElement;
 
 	onMount(() => {
 		// Initialize with localized welcome message
-		terminalOutput = [
-			$_('terminal.welcome'),
-			$_('terminal.helpHint'),
-			''
-		];
-		
+		terminalOutput = [$_('terminal.welcome'), $_('terminal.helpHint'), ''];
+
 		if (terminalInput) {
 			terminalInput.focus();
 		}
@@ -150,7 +146,10 @@
 					const text = command.slice(5);
 					terminalOutput = [...terminalOutput, text];
 				} else {
-					terminalOutput = [...terminalOutput, `bash: ${command}: ${$_('terminal.commandNotFound')}`];
+					terminalOutput = [
+						...terminalOutput,
+						`bash: ${command}: ${$_('terminal.commandNotFound')}`
+					];
 				}
 		}
 
