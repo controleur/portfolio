@@ -1,24 +1,24 @@
 {
-  "loading":{
-    "wallpaper": "Chargement des fonds d'écran...",
-    "error": "Erreur lors du chargement des fonds d'écran.",
-    "finalizing": "Finalisation...",
-    "wallpaperloaded": "Fonds d'écran chargés.",  
-    "initializing": "Initialisation...",
-    "default": "Chargement..."
-  },
-  "window": {
-    "untitled": "Fenêtre sans titre"
-  },
-  "taskbar": {
-    "toggleTheme": "Basculer entre le mode clair et sombre",
-    "volume": "Volume",
-    "language": "Changer de langue",
-    "quickActions": "Afficher les actions rapides",
-    "time": "Heure et date"
-  },
-  "startmenu": {
-    "search": "Rechercher des applications...",
-    "noResults": "Aucun résultat trouvé."
-  }
+	"loading": {
+		"wallpaper": "Chargement des fonds d'écran...",
+		"error": "Erreur lors du chargement des fonds d'écran.",
+		"finalizing": "Finalisation...",
+		"wallpaperloaded": "Fonds d'écran chargés.",
+		"initializing": "Initialisation...",
+		"default": "Chargement..."
+	},
+	"window": {
+		"untitled": "Fenêtre sans titre"
+	},
+	"taskbar": {
+		"toggleTheme": "Basculer entre le mode clair et sombre",
+		"volume": "Volume",
+		"language": "Changer de langue",
+		"quickActions": "Afficher les actions rapides",
+		"time": "Heure et date"
+	},
+	"startmenu": {
+		"search": "Rechercher des applications...",
+		"noResults": "Aucun résultat trouvé."
+	}
 }

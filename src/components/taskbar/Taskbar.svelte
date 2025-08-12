@@ -5,29 +5,36 @@
 	import StartMenu from './StartMenu.svelte';
 	import { onMount } from 'svelte';
 	import { getCurrentTime, ICONS, getIcon } from '$lib';
-	import { windows, openWindow, focusWindow, minimizeWindow, apps, isDarkMode, isSoundMuted, currentLanguage, toggleTheme, toggleSound, toggleLanguage } from '$lib/stores';
+	import {
+		windows,
+		openWindow,
+		focusWindow,
+		minimizeWindow,
+		apps,
+		isDarkMode,
+		isSoundMuted,
+		currentLanguage,
+		toggleTheme,
+		toggleSound,
+		toggleLanguage
+	} from '$lib/stores';
 	import type { App } from '$lib';
 	import { _ } from 'svelte-i18n';
-
 
 	let currentTime: string = getCurrentTime();
 	let showQuickActions = false;
 	let showStartMenu = false;
 
-
 	// Use the shared apps store
 	let availableApps: App[] = [];
 	$: availableApps = $apps;
 
-
-	
-
 	// List apps with at least one open window, mark active if focused
 	$: appsWithWindows = availableApps
-		.filter(app => $windows.some(window => window.appName === app.name))
-		.map(app => ({
+		.filter((app) => $windows.some((window) => window.appName === app.name))
+		.map((app) => ({
 			...app,
-			isActive: $windows.some(window => window.appName === app.name && window.isActive)
+			isActive: $windows.some((window) => window.appName === app.name && window.isActive)
 		}));
 	onMount(() => {
 		const interval = setInterval(() => {
@@ -53,12 +60,12 @@
 	 * Handle app icon click: restore minimized, focus opened, or open new window
 	 */
 	function handleAppClick(appId: number): void {
-		const app = availableApps.find(a => a.id === appId);
+		const app = availableApps.find((a) => a.id === appId);
 		if (!app) return;
 
-		const appWindows = $windows.filter(w => w.appName === app.name);
-		const minimized = appWindows.filter(w => w.isMinimized);
-		const opened = appWindows.filter(w => !w.isMinimized);
+		const appWindows = $windows.filter((w) => w.appName === app.name);
+		const minimized = appWindows.filter((w) => w.isMinimized);
+		const opened = appWindows.filter((w) => !w.isMinimized);
 
 		if (minimized.length > 0) {
 			const lastMinimized = minimized[minimized.length - 1];
@@ -79,15 +86,20 @@
 
 <div
 	id="taskbar"
-	class="absolute bottom-2 left-2 right-2 rounded-lg z-[9999] box-content flex h-10 justify-between bg-white/75 backdrop-blur-lg dark:border-gray-600/50 dark:bg-gray-800/75"
+	class="absolute right-2 bottom-2 left-2 z-[9999] box-content flex h-10 justify-between rounded-lg bg-white/75 backdrop-blur-lg dark:border-gray-600/50 dark:bg-gray-800/75"
 >
 	<div id="taskbarLeft" class="flex">
-		<button id="startBtn" class="flex size-10 p-1 text-gray-900 dark:text-gray-100 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors" on:click={toggleStartMenu} aria-label="Open Start Menu">
+		<button
+			id="startBtn"
+			class="flex size-10 rounded p-1 text-gray-900 transition-colors hover:bg-black/10 dark:text-gray-100 dark:hover:bg-white/10"
+			on:click={toggleStartMenu}
+			aria-label="Open Start Menu"
+		>
 			{@html getIcon('startMenu')}
 		</button>
 		<div id="openedApps" class="flex gap-0.5">
 			{#each appsWithWindows as app (app.id)}
-				<AppIcon 
+				<AppIcon
 					isActive={app.isActive}
 					appName={app.name}
 					iconName={app.icon}
@@ -128,12 +140,9 @@
 			onclick={() => console.log('Time clicked')}
 		/>
 	</div>
-	
+
 	{#if showStartMenu}
-		<StartMenu
-			onLaunch={handleAppClick}
-			onClose={closeStartMenu}
-		/>
+		<StartMenu onLaunch={handleAppClick} onClose={closeStartMenu} />
 	{/if}
 	{#if showQuickActions}
 		<QuickActions onClose={closeQuickActions} />
