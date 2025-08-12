@@ -2,7 +2,7 @@
 	let currentUrl = 'https://controleur.github.io/booki/';
 	let addressInput = currentUrl;
 	let isLoading = false;
-	import { ICONS } from '../../lib/icons';
+	import { ICONS } from '$lib/icons';
 
 	const bookmarks = [
 		{ name: 'Portfolio ⭐', url: 'https://portfolio.dev' },

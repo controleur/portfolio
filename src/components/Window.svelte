@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { ICONS } from '../lib/icons';
+		import { ICONS, getIcon } from '$lib';
 	import { browser } from '$app/environment';
+	import { _ } from 'svelte-i18n';
 	
-	export let title: string = "Untitled Window";
+	export let title: string = $_('window.untitled');
 	type IconKey = keyof typeof ICONS;
 	export let appIcon: IconKey = "fileManager"; // Default to fileManager icon
 	export let isActive: boolean = true;
@@ -148,7 +149,7 @@
     tabindex="0"
     aria-label={title}
 >
-	<!-- Title bar -->
+
 	<div 
 		class="window-titlebar h-10 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 
 			   grid grid-cols-[auto_1fr_auto] items-center px-3 cursor-move border-b border-gray-200 dark:border-gray-600"
@@ -156,14 +157,12 @@
 		role="button"
 		tabindex="0"
 	>
-		<!-- App icon on the left -->
 		<div class="flex items-center gap-2">
 			<div class="w-5 h-5 flex-shrink-0 text-gray-700 dark:text-gray-300 flex items-center justify-center overflow-hidden app-icon">
-				{@html ICONS[appIcon] || ICONS.fileManager}
+				{@html getIcon(appIcon)}
 			</div>
 		</div>
 		
-		<!-- Window title centered -->
 		<div class="flex justify-center">
 			<h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate select-none text-center">
 				{title}

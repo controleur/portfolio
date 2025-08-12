@@ -2,6 +2,9 @@
 	import { onMount, tick } from 'svelte';
 	
 	let terminalOutput: string[] = [
+		'Welcome to Portfolio Terminal!',
+		'Type "help" to see available commands.',
+		'',
 	];
 	
 	let currentInput = '';
@@ -9,8 +12,6 @@
 	let terminalContainer: HTMLDivElement;
 	
 	onMount(() => {
-
-		// Auto-focus the terminal input when component mounts
 		if (terminalInput) {
 			terminalInput.focus();
 		}
@@ -18,37 +19,29 @@
 	});
 	
 	function handleKeydown(event: KeyboardEvent) {
-		// Handle Ctrl+C to interrupt
-		if (event.ctrlKey && event.key === 'c') {
-			event.preventDefault();
-			terminalOutput = [...terminalOutput, `user@portfolio:~$ ${currentInput}^C`];
-			currentInput = '';
-			scrollToBottom();
+		scrollToBottom();
+		if (event.ctrlKey && event.key === 'c') { // Ctrl+C to interrupt
+			handleCtrlC();
 			return;
 		}
-		
-		// Handle Ctrl+L to clear
-		if (event.ctrlKey && event.key === 'l') {
+
+		if (event.ctrlKey && event.key === 'l') { // Ctrl+L to clear
 			event.preventDefault();
 			terminalOutput = [];
 			currentInput = '';
-			scrollToBottom();
 			return;
 		}
-		
-	   if (event.key === 'Enter') {
-		   event.preventDefault();
-		   if (currentInput.trim()) {
-			   executeCommand(currentInput.trim());
-			   currentInput = '';
-		   } else {
-			   terminalOutput = [...terminalOutput, ''];
-		   }
-		   // Always scroll to bottom after any change
-		   scrollToBottom();
-	   }
+
+		if (event.key === 'Enter') { // Enter to execute command
+			event.preventDefault();
+			executeCommand(currentInput.trim());
+			currentInput = '';
+		}
 	}
 	
+	function handleCtrlC() {
+		terminalOutput = [...terminalOutput, `user@portfolio:~$ ${currentInput}^C`];
+	}
 	function scrollToBottom() {
 		tick().then(() => {
 			if (terminalContainer) {
@@ -57,7 +50,6 @@
 		});
 	}
 	
-	// Handle clicks on terminal to focus input
 	function handleTerminalClick() {
 		if (terminalInput) {
 			terminalInput.focus();
@@ -65,8 +57,12 @@
 	}
 	
 	function executeCommand(command: string) {
+		if (command === '') {
+			terminalOutput = [...terminalOutput, ''];
+			return;
+		}
+
 		terminalOutput = [...terminalOutput, `user@portfolio:~$ ${command}`];
-		
 		switch (command.toLowerCase()) {
 			case 'help':
 				terminalOutput = [...terminalOutput, 
@@ -138,9 +134,8 @@
 				];
 				break;
 			default:
-				// Handle echo command specially
 				if (command.toLowerCase().startsWith('echo ')) {
-					const text = command.slice(5); // Remove 'echo '
+					const text = command.slice(5);
 					terminalOutput = [...terminalOutput, text];
 				} else {
 					terminalOutput = [...terminalOutput, `bash: ${command}: command not found`];
@@ -149,78 +144,55 @@
 		
 		terminalOutput = [...terminalOutput, ''];
 		
-		// Refocus input but don't scroll here - let handleKeydown handle it
-		if (terminalInput) {
+		if (terminalInput) { 
 			terminalInput.focus();
 		}
 	}
 </script>
 
  <style>	
-	/* Terminal container improvements */
-	.terminal-container {
-		font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
-		line-height: 1.5;
-		letter-spacing: 0.025em;
-	}
-	
-	/* Improved terminal text rendering */
-	.terminal-text {
-		text-rendering: optimizeLegibility;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
-	
-	/* Smooth scrolling with better performance */
 	.terminal-scroll {
 		scrollbar-width: none;
 		scroll-behavior: smooth;
-		overflow-anchor: none; /* Prevents scroll jumping */
 	}
-	
 </style>
 
 <div 
-	   class="flex-1 h-full w-full min-h-0 bg-black text-green-400 font-mono text-sm flex flex-col terminal-container terminal-text" 
-	   on:click={handleTerminalClick}
+	   class="flex-1 h-full w-full min-h-0 bg-black text-green-400 font-mono text-sm flex flex-col tracking-wide" 
+	   on:click={handleTerminalClick} 
 	   on:keydown={(e) => e.key === 'Enter' && handleTerminalClick()}
 	   role="button"
 	   tabindex="0"
 >
-	   <!-- Terminal Output - Takes remaining space -->
 	   <div class="flex-1 overflow-y-auto terminal-scroll" bind:this={terminalContainer}>
 			   <div class="flex flex-col h-full min-h-0 p-4">
-					   <!-- Output lines -->
 					   {#each terminalOutput as line}
 							   <div class="whitespace-pre-wrap leading-relaxed select-text">{line}</div>
 					   {/each}
 					   
-					   <!-- Current Input Line -->
 					   <div class="flex mt-2">
-							   <span class="text-green-400 select-none mr-1">user@portfolio:~$</span>
-							   <span class="text-green-400 relative">
-				   <span class="min-h-[1.5em] outline-none bg-transparent terminal-text whitespace-pre-wrap break-all" style="display:inline-block;">
-					   {currentInput}<span class="animate-blink">█</span>
-				   </span>
-				   <textarea
-					   bind:this={terminalInput}
-					   bind:value={currentInput}
-					   on:keydown={handleKeydown}
-					   class="absolute inset-0 w-full h-full opacity-0"
-					   autocomplete="off"
-					   spellcheck="false"
-					   name="terminal-input"
-					   rows="1"
-					   aria-label="Terminal command input"
-					   tabindex="0"
-				   ></textarea>
+						   <span class="text-green-400 select-none mr-1">user@portfolio:~$</span>
+						   <span class="text-green-400 relative">
+							   <span class="min-h-[1.5em] outline-none bg-transparent whitespace-pre-wrap break-all" style="display:inline-block;">
+								   {currentInput}<span class="animate-blink">█</span>
+							   </span>
+							   <textarea
+								   bind:this={terminalInput}
+								   bind:value={currentInput}
+								   on:keydown={handleKeydown}
+								   class="absolute inset-0 w-full h-full opacity-0"
+								   autocomplete="off"
+								   spellcheck="false"
+								   name="terminal-input"
+								   rows="1"
+								   aria-label="Terminal command input"
+								   tabindex="0"
+							   ></textarea>
 							   </span>
 					   </div>
-					   <!-- Bottom spacer for scroll -->
 					   <div class="h-4"></div>
 			   </div>
 	   </div>
-	   <!-- Terminal Footer - Fixed at bottom -->
 	   <div class="flex-shrink-0 px-4 py-2 bg-gray-900 text-xs text-gray-400 border-t border-gray-700 select-none">
 			   <span class="font-medium">Terminal</span> - Type 'help' to see available commands | 
 			   <span class="text-gray-500">Ctrl+C to interrupt | Ctrl+L to clear</span>

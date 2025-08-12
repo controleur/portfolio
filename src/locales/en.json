@@ -1,0 +1,24 @@
+{
+  "loading": {
+    "wallpaper": "Loading wallpapers...",
+    "error": "Error loading wallpapers.",
+    "finalizing": "Finalizing...",
+    "wallpaperloaded": "Wallpapers loaded.",
+    "initializing": "Initializing...",
+    "default": "Loading..."
+  },
+  "window": {
+    "untitled": "Untitled Window"
+  },
+  "taskbar": {
+    "toggleTheme": "Toggle light/dark mode",
+    "volume": "Volume",
+    "language": "Change Language",
+    "quickActions": "Show quick Actions",
+    "time": "Time and date"
+  },
+  "startmenu": {
+    "search": "Search apps...",
+    "noResults": "No results found."
+  }
+}

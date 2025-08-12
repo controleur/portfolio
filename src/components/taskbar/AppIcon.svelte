@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { TASKBAR_ICONS } from '../../lib/taskbarIcons';
+	import { ICONS } from '$lib/icons';
+	import { getIcon } from '../../lib/icons';
+	import { openWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow } from '$lib/stores/windowStore';
 	
 	export let isActive: boolean = false;
 	export let appName: string = "Application";
-	export let iconName: keyof typeof TASKBAR_ICONS = "fileManager";
+	export let iconName: keyof typeof ICONS = "fileManager";
 	export let onClick: () => void = () => {};
 </script>
 
@@ -14,6 +16,6 @@
 	on:click={onClick}
 >
 	<div class="w-full h-full flex items-center justify-center text-gray-700 dark:text-gray-300 p-0.5">
-		{@html TASKBAR_ICONS[iconName]}
+		{@html getIcon(iconName)}
 	</div>
 </button>

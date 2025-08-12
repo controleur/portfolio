@@ -3,137 +3,77 @@
 	import AppIcon from './AppIcon.svelte';
 	import QuickActions from './QuickActions.svelte';
 	import StartMenu from './StartMenu.svelte';
-	import { ICONS } from '../../lib/icons';
-	import { TASKBAR_ICONS } from '../../lib/taskbarIcons';
-	import { getCurrentTime, isDarkTheme } from '../../lib/misc';
-	import { windowManager } from '../../lib/windowManager';
 	import { onMount } from 'svelte';
+	import { getCurrentTime, ICONS } from '$lib';
+	import { windows, openWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow, updateWindow, apps, isDarkMode, isSoundMuted, currentLanguage, toggleTheme, toggleSound, toggleLanguage } from '$lib/stores';
+	import type { App } from '$lib';
+	import { _ } from 'svelte-i18n';
 
-	interface App {
-		id: number;
-		name: string;
-		isActive: boolean;
-		icon: keyof typeof TASKBAR_ICONS;
-	}
 
 	let currentTime: string = getCurrentTime();
-	let showQuickActions: boolean = false;
-	let showStartMenu: boolean = false;
-	let isWifiConnected: boolean = true;
-	let isSoundMuted: boolean = false;
-	let isDarkMode: boolean = false;
-	
-	// Available applications with their metadata
-	const availableApps: Array<{ id: number; name: string; icon: keyof typeof TASKBAR_ICONS; description: string }> = [
-		{ id: 1, name: "File Explorer", icon: "fileManager", description: "Browse your files" },
-		{ id: 2, name: "Browser", icon: "browser", description: "Surf the web" },
-		{ id: 3, name: "Terminal", icon: "terminal", description: "Command line access" },
-		{ id: 4, name: "Editor", icon: "editor", description: "Edit your code" }
-	];
+	let showQuickActions = false;
+	let showStartMenu = false;
 
-	// Mapping taskbar icons to main icons
-	const iconMapping: Record<keyof typeof TASKBAR_ICONS, keyof typeof ICONS> = {
-		fileManager: "fileManager",
-		browser: "browser", 
-		terminal: "terminal",
-		editor: "editor"
-	};
+
+	// Use the shared apps store
+	let availableApps: App[] = [];
+	$: availableApps = $apps;
+
+
 	
-	// Calculate apps that have open windows (minimized or not)
-	$: appsWithWindows = availableApps.filter(app => {
-		const hasWindows = $windowManager.some(window => window.appName === app.name);
-		return hasWindows;
-	}).map(app => {
-		// An app is active if it has the currently focused window
-		const hasFocusedWindow = $windowManager.some(window => 
-			window.appName === app.name && window.isActive
-		);
-		return {
+
+	// List apps with at least one open window, mark active if focused
+	$: appsWithWindows = availableApps
+		.filter(app => $windows.some(window => window.appName === app.name))
+		.map(app => ({
 			...app,
-			isActive: hasFocusedWindow
-		};
-	});
-	
+			isActive: $windows.some(window => window.appName === app.name && window.isActive)
+		}));
 	onMount(() => {
-		isDarkMode = isDarkTheme();
-		
 		const interval = setInterval(() => {
 			currentTime = getCurrentTime();
 		}, 1000);
-
 		return () => clearInterval(interval);
 	});
 
-	function toggleQuickActions(): void {
+	function toggleQuickActions() {
 		showQuickActions = !showQuickActions;
 	}
-
-	function toggleStartMenu(): void {
+	function toggleStartMenu() {
 		showStartMenu = !showStartMenu;
 	}
-
-	function closeStartMenu(): void {
+	function closeStartMenu() {
 		showStartMenu = false;
-		}
-
-	function closeQuickActions(): void {
+	}
+	function closeQuickActions() {
 		showQuickActions = false;
 	}
 
-	function toggleWifi(): void {
-		isWifiConnected = !isWifiConnected;
-	}
-	
-	function toggleSound(): void {
-		isSoundMuted = !isSoundMuted;
-	}
-	
-	function toggleTheme(): void {
-		const newTheme = isDarkMode ? "light" : "dark";
-		
-		if (typeof window !== 'undefined') {
-			localStorage.setItem('theme', newTheme);
-			
-			if (newTheme === 'dark') {
-				document.documentElement.classList.add("dark");
-			} else {
-				document.documentElement.classList.remove("dark");
-			}
-			
-			isDarkMode = !isDarkMode;
-		}
-	}
-
+	/**
+	 * Handle app icon click: restore minimized, focus opened, or open new window
+	 */
 	function handleAppClick(appId: number): void {
 		const app = availableApps.find(a => a.id === appId);
 		if (!app) return;
-		
-		// Check if there are minimized windows for this app
-		const minimizedWindows = $windowManager.filter(window => 
-			window.appName === app.name && window.isMinimized
-		);
-		
-		if (minimizedWindows.length > 0) {
-			// Restore the last minimized window
-			const lastMinimized = minimizedWindows[minimizedWindows.length - 1];
-			windowManager.minimizeWindow(lastMinimized.id); // Toggle minimize (will restore)
-			windowManager.focusWindow(lastMinimized.id);
-		} else {
-			// Check if there are open windows for this app
-			const openWindows = $windowManager.filter(window => 
-				window.appName === app.name && !window.isMinimized
-			);
-			
-			if (openWindows.length > 0) {
-				// Focus the last opened window
-				const lastOpen = openWindows[openWindows.length - 1];
-				windowManager.focusWindow(lastOpen.id);
-			} else {
-				// Open a new window
-				const mainIcon = iconMapping[app.icon];
-				windowManager.openWindow(app.name, app.name, mainIcon, '');
-			}
+
+		const appWindows = $windows.filter(w => w.appName === app.name);
+		const minimized = appWindows.filter(w => w.isMinimized);
+		const opened = appWindows.filter(w => !w.isMinimized);
+
+		if (minimized.length > 0) {
+			const lastMinimized = minimized[minimized.length - 1];
+			minimizeWindow(lastMinimized.id); // Restore
+			focusWindow(lastMinimized.id);
+			return;
 		}
+
+		if (opened.length > 0) {
+			const lastOpen = opened[opened.length - 1];
+			focusWindow(lastOpen.id);
+			return;
+		}
+
+		openWindow(app.name, app.name, app.icon, '');
 	}
 </script>
 
@@ -158,31 +98,31 @@
 	</div>
 	<div id="tray" class="flex gap-2 p-2 pr-3">
 		<SysIcon
-			icon={isDarkMode ? ICONS.darkMode : ICONS.lightMode}
-			tooltip="Toggle light/dark mode"
+			icon={$isDarkMode ? ICONS.darkMode : ICONS.lightMode}
+			tooltip={$_('taskbar.toggleTheme')}
 			clickable={true}
 			onclick={toggleTheme}
 		/>
 		<SysIcon
-			icon={isSoundMuted ? ICONS.soundMuted : ICONS.sound}
-			tooltip="Volume"
+			icon={$isSoundMuted ? ICONS.soundMuted : ICONS.sound}
+			tooltip={$_('taskbar.volume')}
 			clickable={true}
 			onclick={toggleSound}
 		/>
 		<SysIcon
-			icon={isWifiConnected ? ICONS.wifi : ICONS.wifiDisconnected}
-			tooltip="Network"
+			value={$currentLanguage}
+			tooltip={$_('taskbar.language')}
 			clickable={true}
-			onclick={toggleWifi}
+			onclick={toggleLanguage}
 		/>
 		<SysIcon
 			icon={ICONS.more}
-			tooltip="Show quick Actions"
+			tooltip={$_('taskbar.quickActions')}
 			clickable={true}
 			onclick={toggleQuickActions}
 		/>
 		<SysIcon
-			tooltip="Time and date"
+			tooltip={$_('taskbar.time')}
 			value={currentTime}
 			clickable={true}
 			onclick={() => console.log('Time clicked')}
@@ -191,7 +131,6 @@
 	
 	{#if showStartMenu}
 		<StartMenu
-			apps={availableApps}
 			onLaunch={handleAppClick}
 			onClose={closeStartMenu}
 		/>

@@ -1,21 +1,6 @@
 import { writable } from 'svelte/store';
 import type { ICONS } from './icons';
-
-export interface WindowData {
-	id: string;
-	title: string;
-	content: string;
-	appName: string;
-	appIcon: keyof typeof ICONS;
-	x: number;
-	y: number;
-	width: number;
-	height: number;
-	zIndex: number;
-	isMinimized: boolean;
-	isMaximized: boolean;
-	isActive: boolean;
-}
+import type { WindowData } from '$lib';
 
 function createWindowManager() {
 	const { subscribe, set, update } = writable<WindowData[]>([]);

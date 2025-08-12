@@ -1,52 +1,54 @@
 
 <script lang="ts">
 import { onMount } from 'svelte';
-import { TASKBAR_ICONS } from '../../lib/taskbarIcons';
-import { ICONS } from '../../lib/icons';
-
-export let apps: Array<{ id: number; name: string; icon: keyof typeof TASKBAR_ICONS; description: string } > = [];
+import { getIcon } from '$lib';
+import { apps, openWindow } from '$lib/stores';
+import type { App } from '$lib';
+import { _ } from 'svelte-i18n';
 export let onLaunch: (appId: number) => void;
 export let onClose: () => void;
 
 let search = '';
-
-let filteredApps: typeof apps = apps;
-
+let availableApps: App[] = [];
+$: availableApps = $apps;
+let filteredApps: App[] = availableApps;
 let searchInput: HTMLInputElement;
-
 let starMenuRef: HTMLDivElement;
 
-
-
+// Update filtered apps on search
 $: filteredApps = search
-  ? apps.filter(app => app.name.toLowerCase().includes(search.toLowerCase()))
-  : apps;
-
+  ? availableApps.filter(app => app.name.toLowerCase().includes(search.toLowerCase()))
+  : availableApps;
 
 function handleLaunch(appId: number) {
-  onLaunch(appId);
-  onClose();
+  const app = availableApps.find(a => a.id === appId);
+  if (app) {
+    openWindow(app.name, app.name, app.icon, '');
+    onLaunch?.(appId);
+    onClose?.();
+  }
 }
 
 function handleKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') onClose();
 }
 
+// Focus input and handle outside click/escape
 onMount(() => {
   window.addEventListener('keydown', handleKeydown);
-  searchInput && searchInput.focus();
+  searchInput?.focus();
   const handleClickOutside = (event: MouseEvent) => {
-      if (starMenuRef && event.target instanceof Node && !starMenuRef.contains(event.target)) {
-        onClose();
-      }
-    };
-
-    setTimeout(() => {
-      document.addEventListener('click', handleClickOutside);
-    }, 100);
-  return () => {window.removeEventListener('keydown', handleKeydown);
+    if (starMenuRef && event.target instanceof Node && !starMenuRef.contains(event.target)) {
+      onClose();
+    }
+  };
+  setTimeout(() => {
+    document.addEventListener('click', handleClickOutside);
+  }, 100);
+  return () => {
+    window.removeEventListener('keydown', handleKeydown);
     document.removeEventListener('click', handleClickOutside);
-  }
+  };
 });
 </script>
 
@@ -56,7 +58,7 @@ onMount(() => {
   </div>
   <div class="flex-1 overflow-y-auto p-2 bg-white dark:bg-gray-800">
     {#if filteredApps.length === 0}
-      <div class="text-center text-gray-400 py-8">No applications found</div>
+      <div class="text-center text-gray-400 py-8">{$_('startmenu.noResults')}</div>
     {:else}
       <ul class="space-y-1">
         {#each filteredApps as app}
@@ -65,7 +67,7 @@ onMount(() => {
               class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors group"
               on:click={() => handleLaunch(app.id)}
             >
-              <span class="text-xl dark:text-gray-300">{@html TASKBAR_ICONS[app.icon]}</span>
+              <span class="text-xl dark:text-gray-300">{@html getIcon(app.icon)}</span>
               <div class="flex flex-col items-start text-left">
                 <span class="font-medium text-gray-900 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300">{app.name}</span>
                 <span class="text-xs text-gray-500 dark:text-gray-400">{app.description}</span>
@@ -77,11 +79,11 @@ onMount(() => {
     {/if}
   </div>
       <div class="flex gap-2 px-4 pt-4 pb-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-      <span class="text-2xl dark:text-gray-300">{@html ICONS.startMenu}</span>
+      <span class="text-2xl dark:text-gray-300">{@html getIcon('startMenu')}</span>
       <input
         class="flex-1 ml-2 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none"
         type="text"
-        placeholder="Search apps..."
+        placeholder={$_('startmenu.search')}
         bind:value={search}
         bind:this={searchInput}
         aria-label="Search applications"

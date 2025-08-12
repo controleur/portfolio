@@ -8,66 +8,92 @@
 	
 	let files: EditorFile[] = [
 		{
-			name: 'App.svelte',
-			language: 'svelte',
+			name: 'about.md',
+			language: 'Markdown Components',
 			modified: true,
 			content: [
-				'<script>',
-				'  import Window from "./Window.svelte";',
-				'  import Taskbar from "./Taskbar.svelte";',
-				'  let windows = [];',
-				'</scr' + 'ipt>',
+				'# About this Portfolio',
 				'',
-				'<div class="desktop">',
-				'  {#each windows as window (window.id)}',
-				'    <Window {window} />',
-				'  {/each}',
-				'  <Taskbar />',
-				'</div>'
+				'## Stack',
+				'- Svelte',
+				'- SvelteKit',
+				'- TypeScript',
+				'- Tailwind CSS',
+				'- Node.js',
+				'',
+				'## Features',
+				'  - Responsive Design',
+				'  - Dark Mode',
+				'  - File Explorer',
+				'  - Taskbar',
+				'  - Terminal',
+				'  - Code "Editor"',
 			]
 		},
 		{
-			name: 'Window.svelte',
-			language: 'svelte',
+			name: 'package.json',
+			language: 'JSON',
 			modified: false,
 			content: [
-				'<script>',
-				'  export let window;',
-				'  let dragging = false;',
-				'</scr' + 'ipt>',
-				'',
-				'<div class="window" class:dragging>',
-				'  <div class="titlebar">',
-				'    <span>{window.title}</span>',
-				'  </div>',
-				'  <div class="content">',
-				'    <slot />',
-				'  </div>',
-				'</div>'
+				'"name": "portfolio",',
+				'"private": true,',
+				'"version": "0.0.1",',
+				'"type": "module",',
+				'"scripts": {',
+					'"dev": "vite dev",',
+					'"build": "vite build",',
+					'"preview": "vite preview",',
+					'"prepare": "svelte-kit sync || echo "",',
+					'"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",',
+					'"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",',
+					'"format": "prettier --write .",',
+					'"lint": "prettier --check . && eslint ."',
+				'},',
+				'"devDependencies": {',
+					'"@eslint/compat": "^1.2.5",',
+					'"@eslint/js": "^9.18.0",',
+					'"@sveltejs/adapter-auto": "^6.0.0",',
+					'"@sveltejs/adapter-node": "^5.2.12",',
+					'"@sveltejs/kit": "^2.16.0",',
+					'"@sveltejs/vite-plugin-svelte": "^5.0.0",',
+					'"@tailwindcss/vite": "^4.0.0",',
+					'"eslint": "^9.18.0",',
+					'"eslint-config-prettier": "^10.0.1",',
+					'"eslint-plugin-svelte": "^3.0.0",',
+					'"globals": "^16.0.0",',
+					'"prettier": "^3.4.2",',
+					'"prettier-plugin-svelte": "^3.3.3",',
+					'"prettier-plugin-tailwindcss": "^0.6.11",',
+					'"svelte": "^5.0.0",',
+					'"svelte-check": "^4.0.0",',
+					'"tailwindcss": "^4.0.0",',
+					'"typescript": "^5.0.0",',
+					'"typescript-eslint": "^8.20.0",',
+					'"vite": "^6.2.6"',
+				'}'
 			]
 		},
 		{
-			name: 'windowManager.ts',
+			name: 'knowledge.ts',
 			language: 'typescript',
 			modified: false,
 			content: [
-				'import { writable } from "svelte/store";',
+				'import * from "svelte";',
+				'import * from "react";',
 				'',
-				'export interface WindowState {',
-				'  id: string;',
-				'  title: string;',
-				'  appName: string;',
-				'  x: number;',
-				'  y: number;',
-				'  width: number;',
-				'  height: number;',
-				'  isMinimized: boolean;',
-				'  isMaximized: boolean;',
-				'  isActive: boolean;',
-				'  zIndex: number;',
+				'export const Tools = {',
+				'  tailwind: "Tailwind CSS",',
+				'  sass: "Sass",',
+				'  git: "Git",',
+				'  express: "Express.js",',
+				'  vite: "Vite",',
+				'  node: "Node.js",',
+				'  mongodb: "MongoDB",',
+				'  postgresql: "PostgreSQL",',
+				'  docker: "Docker",',
+
 				'}',
 				'',
-				'export const windows = writable<WindowState[]>([]);'
 			]
 		}
 	];
@@ -82,7 +108,7 @@
 	
 	function getLanguageColor(language: string) {
 		switch (language) {
-			case 'svelte': return 'bg-orange-500';
+			case 'JSON': return 'bg-orange-500';
 			case 'typescript': return 'bg-blue-500';
 			case 'javascript': return 'bg-yellow-500';
 			default: return 'bg-gray-400';
@@ -90,12 +116,46 @@
 	}
 	
 	function highlightLine(line: string, language: string): string {
-		if (language === 'svelte' || language === 'typescript') {
-			return line
-				.replace(/(import|export|from|let|const|function|interface)/g, '<span class="text-blue-400">$1</span>')
-				.replace(/(\{[^}]*\})/g, '<span class="text-yellow-400">$1</span>')
-				.replace(/(\/\/.*$)/g, '<span class="text-green-400">$1</span>')
-				.replace(/(".*?"|'.*?')/g, '<span class="text-green-300">$1</span>');
+		if (language === 'JSON' || language === 'typescript') {
+			// Highlight keywords only outside of strings
+			let inString = false;
+			let stringChar = '';
+			let result = '';
+			let buffer = '';
+			for (let i = 0; i < line.length; i++) {
+				const char = line[i];
+				// Enter or exit string
+				if (!inString && (char === '"' || char === "'")) {
+					inString = true;
+					stringChar = char;
+					// Highlight code before string
+					result += buffer
+						.replace(/\b(import|export|from|let|const|function|interface)\b/g, '<span class="text-blue-400">$1</span>')
+						.replace(/(\{[^}]*\})/g, '<span class="text-yellow-400">$1</span>')
+						.replace(/(\/\/.*$)/g, '<span class="text-green-400">$1</span>');
+					buffer = char;
+				} else if (inString && char === stringChar) {
+					inString = false;
+					buffer += char;
+					// Highlight string
+					result += `<span class=\"text-green-300\">${buffer}</span>`;
+					buffer = '';
+				} else {
+					buffer += char;
+				}
+			}
+			// Highlight whatever is left
+			if (buffer) {
+				if (inString) {
+					result += `<span class=\"text-green-300\">${buffer}</span>`;
+				} else {
+					result += buffer
+						.replace(/\b(import|export|from|let|const|function|interface)\b/g, '<span class="text-blue-400">$1</span>')
+						.replace(/(\{[^}]*\})/g, '<span class="text-yellow-400">$1</span>')
+						.replace(/(\/\/.*$)/g, '<span class="text-green-400">$1</span>');
+				}
+			}
+			return result;
 		}
 		return line;
 	}

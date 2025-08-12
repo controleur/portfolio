@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { ICONS } from '../lib/icons';
+	import { ICONS } from '$lib/icons';
 	import { fade, scale } from 'svelte/transition';
-	
+	import { _ } from 'svelte-i18n';
 	export let isLoading: boolean = true;
 	export let loadingProgress: number = 0;
-	export let loadingText: string = "Loading...";
+	export let loadingText: string = $_('loading.default');
 	
-	// Use external state to manage display progress
 	let displayProgress: number = 0;
 	
 	$: {
