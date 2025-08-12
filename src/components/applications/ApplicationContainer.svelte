@@ -1,27 +1,27 @@
 <script lang="ts">
-import Explorer from './Explorer.svelte';
-import Terminal from './Terminal.svelte';
-import Browser from './Browser.svelte';
-import Editor from './Editor.svelte';
+	import Explorer from './Explorer.svelte';
+	import Terminal from './Terminal.svelte';
+	import Browser from './Browser.svelte';
+	import Editor from './Editor.svelte';
 
-type AppKey = 'Explorer' | 'Terminal' | 'Browser' | 'Editor';
-export let appName: string;
-export let content: string = '';
-import type { SvelteComponent } from 'svelte';
-const components: Record<AppKey, typeof SvelteComponent<any>> = {
-	Explorer,
-	Terminal,
-	Browser,
-	Editor
-};
+	type AppKey = 'Explorer' | 'Terminal' | 'Browser' | 'Editor';
+	export let appName: string;
+	export let content: string = '';
+	import type { SvelteComponent } from 'svelte';
+	const components: Record<AppKey, typeof SvelteComponent<any>> = {
+		Explorer,
+		Terminal,
+		Browser,
+		Editor
+	};
 
-$: component = components[appName as AppKey];
+	$: component = components[appName as AppKey];
 </script>
 
-<div class="h-full min-h-0 flex flex-col text-gray-700 dark:text-gray-300">
+<div class="flex h-full min-h-0 flex-col text-gray-700 dark:text-gray-300">
 	{#if component}
 		{#if appName === 'Browser'}
-			<svelte:component this={component} content={content} />
+			<svelte:component this={component} {content} />
 		{:else}
 			<svelte:component this={component} />
 		{/if}

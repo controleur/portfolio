@@ -1,14 +1,14 @@
 services:
   web:
     build:
-          context: .
-          dockerfile: docker/Dockerfile.prod
+      context: .
+      dockerfile: docker/Dockerfile.prod
     volumes:
-            - ./src:/app/src
-            - ./static:/app/static
-            - /app/node_modules
+      - ./src:/app/src
+      - ./static:/app/static
+      - /app/node_modules
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=production
     restart: unless-stopped

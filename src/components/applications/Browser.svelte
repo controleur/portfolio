@@ -1,34 +1,34 @@
 <script lang="ts">
-				export let content = '';
-				import { getIcon } from '$lib/icons';
-				import { bookmarks } from '$lib/stores/bookmarkStore';
-				import { onMount } from 'svelte';
+	export let content = '';
+	import { getIcon } from '$lib/icons';
+	import { bookmarks } from '$lib/stores/bookmarkStore';
+	import { onMount } from 'svelte';
 
-				let currentUrl = '';
-				let addressInput = '';
-				let isLoading = false;
+	let currentUrl = '';
+	let addressInput = '';
+	let isLoading = false;
 
-				onMount(() => {
-					currentUrl = content || 'https://controleur.github.io/booki/';
-					addressInput = currentUrl;
-				});
+	onMount(() => {
+		currentUrl = content || 'https://controleur.github.io/booki/';
+		addressInput = currentUrl;
+	});
 
-					function navigateTo(url: string) {
-						isLoading = true;
-						currentUrl = addressInput = url;
-						setTimeout(() => isLoading = false, 800);
-					}
+	function navigateTo(url: string) {
+		isLoading = true;
+		currentUrl = addressInput = url;
+		setTimeout(() => (isLoading = false), 800);
+	}
 
-		function handleAddressSubmit() {
-			if (addressInput.trim()) navigateTo(addressInput.trim());
-		}
+	function handleAddressSubmit() {
+		if (addressInput.trim()) navigateTo(addressInput.trim());
+	}
 
-		function goBack() {}
-		function goForward() {}
-		function refresh() {
-			isLoading = true;
-			setTimeout(() => isLoading = false, 500);
-		}
+	function goBack() {}
+	function goForward() {}
+	function refresh() {
+		isLoading = true;
+		setTimeout(() => (isLoading = false), 500);
+	}
 </script>
 
 <div class="flex h-full flex-col bg-white dark:bg-gray-800">
@@ -50,7 +50,7 @@
 		</button>
 		<button
 			on:click={refresh}
-			class="rounded p-2 w-9 h-9 flex items-center justify-center text-gray-600 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-600"
+			class="flex h-9 w-9 items-center justify-center rounded p-2 text-gray-600 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-600"
 		>
 			{@html getIcon('refresh')}
 		</button>
@@ -106,42 +106,33 @@
 				</div>
 			</div>
 		{:else if currentUrl === 'https://portfolio.dev'}
-			<iframe
-				src="http://localhost:5173/"
-				title="This Portfolio"
-				class="h-full w-full border-0"
+			<iframe src="http://localhost:5173/" title="This Portfolio" class="h-full w-full border-0"
 			></iframe>
-				{:else if currentUrl === 'https://studio.ivory-app.com'}
+		{:else if currentUrl === 'https://studio.ivory-app.com'}
 			<iframe
 				src="https://studio.ivory-app.com"
 				title="Ivory Landing Page"
 				class="h-full w-full border-0"
 			></iframe>
-			{:else if currentUrl === 'https://controleur.github.io/nina-carducci/'}
+		{:else if currentUrl === 'https://controleur.github.io/nina-carducci/'}
 			<iframe
 				src="https://controleur.github.io/nina-carducci/"
 				title="Nina Carducci"
 				class="h-full w-full border-0"
 			></iframe>
-			{:else if currentUrl === 'https://controleur.github.io/booki/'}
-			<iframe
-				src="https://controleur.github.io/booki/"
-				title="Booki"
-				class="h-full w-full border-0"
+		{:else if currentUrl === 'https://controleur.github.io/booki/'}
+			<iframe src="https://controleur.github.io/booki/" title="Booki" class="h-full w-full border-0"
 			></iframe>
-			{:else if currentUrl === 'https://sophie-bluel-five.vercel.app/'}
+		{:else if currentUrl === 'https://sophie-bluel-five.vercel.app/'}
 			<iframe
 				src="https://sophie-bluel-five.vercel.app/"
 				title="Sophie Bluel's Portfolio"
 				class="h-full w-full border-0"
 			></iframe>
-			{:else if currentUrl === 'https://kasa-five-ebon.vercel.app/'}
-			<iframe
-				src="https://kasa-five-ebon.vercel.app/"
-				title="Kasa"
-				class="h-full w-full border-0"
+		{:else if currentUrl === 'https://kasa-five-ebon.vercel.app/'}
+			<iframe src="https://kasa-five-ebon.vercel.app/" title="Kasa" class="h-full w-full border-0"
 			></iframe>
-			{:else if currentUrl === 'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs'}
+		{:else if currentUrl === 'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs'}
 			<iframe
 				src="https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs"
 				title="Mon Vieux Grimoire API Docs"

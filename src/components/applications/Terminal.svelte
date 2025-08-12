@@ -1,44 +1,46 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	
+
 	let terminalOutput: string[] = [
 		'Welcome to Portfolio Terminal!',
 		'Type "help" to see available commands.',
-		'',
+		''
 	];
-	
+
 	let currentInput = '';
 	let terminalInput: HTMLTextAreaElement;
 	let terminalContainer: HTMLDivElement;
-	
+
 	onMount(() => {
 		if (terminalInput) {
 			terminalInput.focus();
 		}
-
 	});
-	
+
 	function handleKeydown(event: KeyboardEvent) {
 		scrollToBottom();
-		if (event.ctrlKey && event.key === 'c') { // Ctrl+C to interrupt
+		if (event.ctrlKey && event.key === 'c') {
+			// Ctrl+C to interrupt
 			handleCtrlC();
 			return;
 		}
 
-		if (event.ctrlKey && event.key === 'l') { // Ctrl+L to clear
+		if (event.ctrlKey && event.key === 'l') {
+			// Ctrl+L to clear
 			event.preventDefault();
 			terminalOutput = [];
 			currentInput = '';
 			return;
 		}
 
-		if (event.key === 'Enter') { // Enter to execute command
+		if (event.key === 'Enter') {
+			// Enter to execute command
 			event.preventDefault();
 			executeCommand(currentInput.trim());
 			currentInput = '';
 		}
 	}
-	
+
 	function handleCtrlC() {
 		terminalOutput = [...terminalOutput, `user@portfolio:~$ ${currentInput}^C`];
 	}
@@ -49,13 +51,13 @@
 			}
 		});
 	}
-	
+
 	function handleTerminalClick() {
 		if (terminalInput) {
 			terminalInput.focus();
 		}
 	}
-	
+
 	function executeCommand(command: string) {
 		if (command === '') {
 			terminalOutput = [...terminalOutput, ''];
@@ -65,7 +67,8 @@
 		terminalOutput = [...terminalOutput, `user@portfolio:~$ ${command}`];
 		switch (command.toLowerCase()) {
 			case 'help':
-				terminalOutput = [...terminalOutput, 
+				terminalOutput = [
+					...terminalOutput,
 					'Available commands:',
 					'  help     - Show this help',
 					'  clear    - Clear the terminal',
@@ -85,7 +88,8 @@
 				terminalOutput = [];
 				break;
 			case 'ls':
-				terminalOutput = [...terminalOutput, 
+				terminalOutput = [
+					...terminalOutput,
 					'total 12',
 					'drwxr-xr-x  2 user user 4096 Dec 20 10:30 Documents',
 					'drwxr-xr-x  3 user user 4096 Dec 20 10:30 Projects',
@@ -100,18 +104,22 @@
 				terminalOutput = [...terminalOutput, 'user'];
 				break;
 			case 'date':
-				terminalOutput = [...terminalOutput, new Date().toLocaleString('en-US', {
-					weekday: 'long',
-					year: 'numeric',
-					month: 'long',
-					day: 'numeric',
-					hour: '2-digit',
-					minute: '2-digit',
-					second: '2-digit'
-				})];
+				terminalOutput = [
+					...terminalOutput,
+					new Date().toLocaleString('en-US', {
+						weekday: 'long',
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+						hour: '2-digit',
+						minute: '2-digit',
+						second: '2-digit'
+					})
+				];
 				break;
 			case 'neofetch':
-				terminalOutput = [...terminalOutput,
+				terminalOutput = [
+					...terminalOutput,
 					'                   -`                    user@portfolio',
 					'                  .o+`                   ─────────────',
 					'                 `ooo/                   OS: Portfolio Linux x86_64',
@@ -141,60 +149,65 @@
 					terminalOutput = [...terminalOutput, `bash: ${command}: command not found`];
 				}
 		}
-		
+
 		terminalOutput = [...terminalOutput, ''];
-		
-		if (terminalInput) { 
+
+		if (terminalInput) {
 			terminalInput.focus();
 		}
 	}
 </script>
 
- <style>	
+<div
+	class="flex h-full min-h-0 w-full flex-1 flex-col bg-black font-mono text-sm tracking-wide text-green-400"
+	on:click={handleTerminalClick}
+	on:keydown={(e) => e.key === 'Enter' && handleTerminalClick()}
+	role="button"
+	tabindex="0"
+>
+	<div class="terminal-scroll flex-1 overflow-y-auto" bind:this={terminalContainer}>
+		<div class="flex h-full min-h-0 flex-col p-4">
+			{#each terminalOutput as line}
+				<div class="leading-relaxed whitespace-pre-wrap select-text">{line}</div>
+			{/each}
+
+			<div class="mt-2 flex">
+				<span class="mr-1 text-green-400 select-none">user@portfolio:~$</span>
+				<span class="relative text-green-400">
+					<span
+						class="min-h-[1.5em] bg-transparent break-all whitespace-pre-wrap outline-none"
+						style="display:inline-block;"
+					>
+						{currentInput}<span class="animate-blink">█</span>
+					</span>
+					<textarea
+						bind:this={terminalInput}
+						bind:value={currentInput}
+						on:keydown={handleKeydown}
+						class="absolute inset-0 h-full w-full opacity-0"
+						autocomplete="off"
+						spellcheck="false"
+						name="terminal-input"
+						rows="1"
+						aria-label="Terminal command input"
+						tabindex="0"
+					></textarea>
+				</span>
+			</div>
+			<div class="h-4"></div>
+		</div>
+	</div>
+	<div
+		class="flex-shrink-0 border-t border-gray-700 bg-gray-900 px-4 py-2 text-xs text-gray-400 select-none"
+	>
+		<span class="font-medium">Terminal</span> - Type 'help' to see available commands |
+		<span class="text-gray-500">Ctrl+C to interrupt | Ctrl+L to clear</span>
+	</div>
+</div>
+
+<style>
 	.terminal-scroll {
 		scrollbar-width: none;
 		scroll-behavior: smooth;
 	}
 </style>
-
-<div 
-	   class="flex-1 h-full w-full min-h-0 bg-black text-green-400 font-mono text-sm flex flex-col tracking-wide" 
-	   on:click={handleTerminalClick} 
-	   on:keydown={(e) => e.key === 'Enter' && handleTerminalClick()}
-	   role="button"
-	   tabindex="0"
->
-	   <div class="flex-1 overflow-y-auto terminal-scroll" bind:this={terminalContainer}>
-			   <div class="flex flex-col h-full min-h-0 p-4">
-					   {#each terminalOutput as line}
-							   <div class="whitespace-pre-wrap leading-relaxed select-text">{line}</div>
-					   {/each}
-					   
-					   <div class="flex mt-2">
-						   <span class="text-green-400 select-none mr-1">user@portfolio:~$</span>
-						   <span class="text-green-400 relative">
-							   <span class="min-h-[1.5em] outline-none bg-transparent whitespace-pre-wrap break-all" style="display:inline-block;">
-								   {currentInput}<span class="animate-blink">█</span>
-							   </span>
-							   <textarea
-								   bind:this={terminalInput}
-								   bind:value={currentInput}
-								   on:keydown={handleKeydown}
-								   class="absolute inset-0 w-full h-full opacity-0"
-								   autocomplete="off"
-								   spellcheck="false"
-								   name="terminal-input"
-								   rows="1"
-								   aria-label="Terminal command input"
-								   tabindex="0"
-							   ></textarea>
-							   </span>
-					   </div>
-					   <div class="h-4"></div>
-			   </div>
-	   </div>
-	   <div class="flex-shrink-0 px-4 py-2 bg-gray-900 text-xs text-gray-400 border-t border-gray-700 select-none">
-			   <span class="font-medium">Terminal</span> - Type 'help' to see available commands | 
-			   <span class="text-gray-500">Ctrl+C to interrupt | Ctrl+L to clear</span>
-	   </div>
-</div>
