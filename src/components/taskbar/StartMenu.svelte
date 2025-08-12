@@ -52,7 +52,7 @@
 </script>
 
 <div
-	class="animate-fade-in fixed bottom-14 left-2 z-[10000] flex w-80 flex-col overflow-hidden rounded-xl border border-gray-300 bg-white/90 shadow-2xl dark:border-gray-700 dark:bg-gray-800/95"
+	class="animate-in slide-in-from-bottom-4 fade-in fixed bottom-14 left-2 z-[10000] flex w-80 flex-col overflow-hidden rounded-xl border border-gray-300 bg-white/90 shadow-2xl duration-200 dark:border-gray-700 dark:bg-gray-800/95"
 	bind:this={starMenuRef}
 >
 	<div
@@ -103,19 +103,3 @@
 		/>
 	</div>
 </div>
-
-<style>
-	.animate-fade-in {
-		animation: fadeIn 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-</style>

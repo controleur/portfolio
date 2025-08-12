@@ -1,12 +1,24 @@
 <script lang="ts">
 	export let content = '';
-	import { getIcon } from '$lib/icons';
-	import { bookmarks } from '$lib/stores/bookmarkStore';
+	import { getIcon } from '$lib';
+	import { bookmarks } from '$lib/stores';
 	import { onMount } from 'svelte';
 
 	let currentUrl = '';
 	let addressInput = '';
 	let isLoading = false;
+
+	// Define supported sites for iframe rendering
+	const supportedSites = {
+		'https://portfolio.dev': 'http://localhost:5173/',
+		'https://studio.ivory-app.com': 'https://studio.ivory-app.com',
+		'https://controleur.github.io/nina-carducci/': 'https://controleur.github.io/nina-carducci/',
+		'https://controleur.github.io/booki/': 'https://controleur.github.io/booki/',
+		'https://sophie-bluel-five.vercel.app/': 'https://sophie-bluel-five.vercel.app/',
+		'https://kasa-five-ebon.vercel.app/': 'https://kasa-five-ebon.vercel.app/',
+		'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs':
+			'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs'
+	};
 
 	onMount(() => {
 		currentUrl = content || 'https://controleur.github.io/booki/';
@@ -23,12 +35,19 @@
 		if (addressInput.trim()) navigateTo(addressInput.trim());
 	}
 
-	function goBack() {}
-	function goForward() {}
+	function goBack() {
+		// TODO: Implement browser history navigation
+	}
+	function goForward() {
+		// TODO: Implement browser history navigation
+	}
 	function refresh() {
 		isLoading = true;
 		setTimeout(() => (isLoading = false), 500);
 	}
+
+	$: iframeUrl = supportedSites[currentUrl as keyof typeof supportedSites];
+	$: isUnsupportedUrl = !iframeUrl && currentUrl;
 </script>
 
 <div class="flex h-full flex-col bg-white dark:bg-gray-800">
@@ -105,40 +124,9 @@
 					<p class="text-gray-600 dark:text-gray-400">Loading...</p>
 				</div>
 			</div>
-		{:else if currentUrl === 'https://portfolio.dev'}
-			<iframe src="http://localhost:5173/" title="This Portfolio" class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://studio.ivory-app.com'}
-			<iframe
-				src="https://studio.ivory-app.com"
-				title="Ivory Landing Page"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://controleur.github.io/nina-carducci/'}
-			<iframe
-				src="https://controleur.github.io/nina-carducci/"
-				title="Nina Carducci"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://controleur.github.io/booki/'}
-			<iframe src="https://controleur.github.io/booki/" title="Booki" class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://sophie-bluel-five.vercel.app/'}
-			<iframe
-				src="https://sophie-bluel-five.vercel.app/"
-				title="Sophie Bluel's Portfolio"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://kasa-five-ebon.vercel.app/'}
-			<iframe src="https://kasa-five-ebon.vercel.app/" title="Kasa" class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs'}
-			<iframe
-				src="https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs"
-				title="Mon Vieux Grimoire API Docs"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else}
+		{:else if iframeUrl}
+			<iframe src={iframeUrl} title={currentUrl} class="h-full w-full border-0"></iframe>
+		{:else if isUnsupportedUrl}
 			<div class="flex h-full items-center justify-center">
 				<div class="text-center">
 					<h2 class="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">Page not found</h2>
@@ -146,7 +134,7 @@
 						The requested URL does not exist in this simulation.
 					</p>
 					<button
-						on:click={() => navigateTo('https://svelte.dev')}
+						on:click={() => navigateTo('https://controleur.github.io/booki/')}
 						class="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
 					>
 						Back to Home

@@ -3,8 +3,10 @@
 	import Terminal from './Terminal.svelte';
 	import Browser from './Browser.svelte';
 	import Editor from './Editor.svelte';
+	import Settings from './Settings.svelte';
+	import About from './About.svelte';
 
-	type AppKey = 'Explorer' | 'Terminal' | 'Browser' | 'Editor';
+	type AppKey = 'Explorer' | 'Terminal' | 'Browser' | 'Editor' | 'Settings' | 'About';
 	export let appName: string;
 	export let content: string = '';
 	import type { SvelteComponent } from 'svelte';
@@ -12,7 +14,9 @@
 		Explorer,
 		Terminal,
 		Browser,
-		Editor
+		Editor,
+		Settings,
+		About
 	};
 
 	$: component = components[appName as AppKey];

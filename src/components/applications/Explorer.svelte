@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { bookmarks } from '$lib/stores/bookmarkStore';
-	import type { Bookmark } from '$lib/stores/bookmarkStore';
+	import { bookmarks, type Bookmark } from '$lib/stores';
 
 	interface FileItem {
 		name: string;
