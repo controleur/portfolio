@@ -20,5 +20,70 @@
 	"startmenu": {
 		"search": "Rechercher des applications...",
 		"noResults": "Aucun résultat trouvé."
+	},
+	"browser": {
+		"urlPlaceholder": "Entrez une URL...",
+		"goButton": "Aller",
+		"loading": "Chargement...",
+		"pageNotFound": "Page non trouvée",
+		"pageNotFoundDescription": "L'URL demandée n'existe pas dans cette simulation.",
+		"backToHome": "Retour à l'accueil"
+	},
+	"terminal": {
+		"welcome": "Bienvenue dans le Terminal Portfolio !",
+		"helpHint": "Tapez \"help\" pour voir les commandes disponibles.",
+		"commandNotFound": "commande introuvable",
+		"helpTitle": "Commandes disponibles :",
+		"helpCommands": {
+			"help": "Afficher cette aide",
+			"clear": "Effacer le terminal",
+			"ls": "Lister les fichiers",
+			"pwd": "Afficher le répertoire courant",
+			"whoami": "Afficher le nom d'utilisateur",
+			"date": "Afficher la date courante",
+			"neofetch": "Afficher les informations système",
+			"echo": "Répéter le texte"
+		},
+		"keyboardShortcuts": "Raccourcis clavier :",
+		"shortcuts": {
+			"ctrlC": "Interrompre la commande courante",
+			"ctrlL": "Effacer l'écran"
+		},
+		"statusBar": "Tapez 'help' pour voir les commandes disponibles",
+		"statusShortcuts": "Ctrl+C pour interrompre | Ctrl+L pour effacer"
+	},
+	"explorer": {
+		"back": "Retour",
+		"forward": "Suivant",
+		"backToProjects": "Retour aux projets",
+		"newFolder": "Nouveau dossier",
+		"projects": "Projets",
+		"projectsCount": "{count} projet(s)"
+	},
+	"apps": {
+		"explorer": {
+			"name": "Explorateur",
+			"description": "Parcourir vos fichiers"
+		},
+		"browser": {
+			"name": "Navigateur",
+			"description": "Naviguer sur le web"
+		},
+		"terminal": {
+			"name": "Terminal",
+			"description": "Accès en ligne de commande"
+		},
+		"editor": {
+			"name": "Éditeur",
+			"description": "Éditer votre code"
+		},
+		"settings": {
+			"name": "Paramètres",
+			"description": "Configurer votre système"
+		},
+		"about": {
+			"name": "À propos",
+			"description": "En savoir plus sur ce projet"
+		}
 	}
 }

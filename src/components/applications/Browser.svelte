@@ -3,7 +3,7 @@
 	import { getIcon } from '$lib';
 	import { bookmarks } from '$lib/stores';
 	import { onMount } from 'svelte';
-
+	import { _ } from 'svelte-i18n';
 	let currentUrl = '';
 	let addressInput = '';
 	let isLoading = false;
@@ -61,13 +61,13 @@
 				<input
 					bind:value={addressInput}
 					class="flex-1 rounded-l border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-500 dark:bg-gray-800 dark:text-gray-100"
-					placeholder="Enter a URL..."
+					placeholder={$_('browser.urlPlaceholder')}
 				/>
 				<button
 					type="submit"
 					class="rounded-r bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
 				>
-					Go
+					{$_('browser.goButton')}
 				</button>
 			</form>
 		</div>
@@ -102,7 +102,7 @@
 					<div
 						class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
 					></div>
-					<p class="text-gray-600 dark:text-gray-400">Loading...</p>
+					<p class="text-gray-600 dark:text-gray-400">{$_('browser.loading')}</p>
 				</div>
 			</div>
 		{:else if currentUrl === 'https://portfolio.dev'}
@@ -141,15 +141,17 @@
 		{:else}
 			<div class="flex h-full items-center justify-center">
 				<div class="text-center">
-					<h2 class="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">Page not found</h2>
+					<h2 class="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
+						{$_('browser.pageNotFound')}
+					</h2>
 					<p class="mb-4 text-gray-600 dark:text-gray-400">
-						The requested URL does not exist in this simulation.
+						{$_('browser.pageNotFoundDescription')}
 					</p>
 					<button
 						on:click={() => navigateTo('https://svelte.dev')}
 						class="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
 					>
-						Back to Home
+						{$_('browser.backToHome')}
 					</button>
 				</div>
 			</div>
