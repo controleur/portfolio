@@ -106,7 +106,7 @@
 				</div>
 			</div>
 		{:else if currentUrl === 'https://portfolio.dev'}
-			<iframe src="http://localhost:5173/" title="This Portfolio" class="h-full w-full border-0"
+			<iframe src="http://mael.tailored.agency/" title="This Portfolio" class="h-full w-full border-0"
 			></iframe>
 		{:else if currentUrl === 'https://studio.ivory-app.com'}
 			<iframe
