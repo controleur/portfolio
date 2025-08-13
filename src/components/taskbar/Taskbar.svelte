@@ -135,8 +135,7 @@
 		<SysIcon
 			tooltip={$_('taskbar.time')}
 			value={currentTime}
-			clickable={true}
-			onclick={() => console.log('Time clicked')}
+			clickable={false}
 		/>
 	</div>
 
