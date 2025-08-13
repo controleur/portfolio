@@ -8,7 +8,7 @@
 
 	onMount(() => {
 		// Initialize with localized welcome message
-		terminalOutput = [$_('terminal.welcome'), $_('terminal.helpHint'), ''];
+		terminalOutput = [$_('terminal.welcome'), $_('terminal.about'), $_('terminal.helpHint'), ''];
 
 		if (terminalInput) {
 			terminalInput.focus();

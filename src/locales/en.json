@@ -34,6 +34,7 @@
 		"helpHint": "Type \"help\" to see available commands.",
 		"commandNotFound": "command not found",
 		"helpTitle": "Available commands:",
+		"about": "This site is a portfolio, allowing me to showcase my projects and skills acquired during my web development training. You can find my projects in the file explorer, my skills in the editor, and the links to contact me in the quick action menu of the taskbar (bottom right).",
 		"helpCommands": {
 			"help": "Show this help",
 			"clear": "Clear the terminal",
@@ -76,14 +77,6 @@
 		"editor": {
 			"name": "Editor",
 			"description": "Edit your code"
-		},
-		"settings": {
-			"name": "Settings",
-			"description": "Configure your system"
-		},
-		"about": {
-			"name": "About",
-			"description": "Learn more about this project"
 		}
 	}
 }

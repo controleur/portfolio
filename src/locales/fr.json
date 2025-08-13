@@ -34,6 +34,7 @@
 		"helpHint": "Tapez \"help\" pour voir les commandes disponibles.",
 		"commandNotFound": "commande introuvable",
 		"helpTitle": "Commandes disponibles :",
+		"about": "Ce site est un portfolio, me permettant de présenter mes projets et compétences, acquis durant ma formation de développeur web. Vous trouverez mes projets dans l'explorateur de fichiers, mes compétences dans l'éditeur, et les liens pour me contacter dans le menu d'action rapide de la barre des tâches (en bas à droite).",
 		"helpCommands": {
 			"help": "Afficher cette aide",
 			"clear": "Effacer le terminal",
@@ -76,14 +77,6 @@
 		"editor": {
 			"name": "Éditeur",
 			"description": "Éditer votre code"
-		},
-		"settings": {
-			"name": "Paramètres",
-			"description": "Configurer votre système"
-		},
-		"about": {
-			"name": "À propos",
-			"description": "En savoir plus sur ce projet"
 		}
 	}
 }
