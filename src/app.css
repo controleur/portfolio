@@ -7,14 +7,19 @@
 }
 
 @theme {
-  --animate-blink: blink 1s step-end infinite;
-  @keyframes blink { 
-	0% { opacity: 1.0; }
-	50% { opacity: 0.0; }
-	100% { opacity: 1.0; }
-  }
+	--animate-blink: blink 1s step-end infinite;
+	@keyframes blink {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
 }
-
 
 /* Webkit scrollbar styling - KDE Plasma inspired */
 ::-webkit-scrollbar {
@@ -51,8 +56,7 @@
 }
 
 /* Dark mode scrollbars - KDE Plasma dark theme */
-.dark *
-{
+.dark * {
 	scrollbar-color: #5e81ac #2e3440;
 }
 .dark ::-webkit-scrollbar {

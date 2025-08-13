@@ -4,6 +4,6 @@ register('en', () => import('./locales/en.json'));
 register('fr', () => import('./locales/fr.json'));
 
 init({
-  fallbackLocale: 'en',
-  initialLocale: 'en'
+	fallbackLocale: 'en',
+	initialLocale: 'en'
 });
