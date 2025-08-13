@@ -14,6 +14,8 @@ https://develop.kde.org/hig/
 https://develop.kde.org/frameworks/breeze-icons/
 https://www.figma.com/design/ftmItJHiG2X6u38nTh5klG/KDE-Plasma-6--UI-Kit--Demo---Community-?node-id=0-1&p=f&t=947Qp7BzGt3Q5Tct-0
 
+https://flowbite.com/icons/
+
 ## Sources
 
 ### Maquette
