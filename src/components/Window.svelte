@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { ICONS, getIcon } from '$lib';
+	import { getIcon } from '$lib';
 	import { browser } from '$app/environment';
 	import { _ } from 'svelte-i18n';
 
@@ -24,7 +24,6 @@
 	}>();
 
 	let isDragging: boolean = false;
-	let isResizing: boolean = false;
 	let dragStartX: number = 0;
 	let dragStartY: number = 0;
 	let windowRef: HTMLDivElement;

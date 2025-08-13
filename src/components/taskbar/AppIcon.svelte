@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getIcon, ICONS } from '$lib';
+	import { getIcon } from '$lib';
 	export let isActive: boolean = false;
 	export let appName: string = 'Application';
 	export let iconName: keyof typeof ICONS = 'fileManager';

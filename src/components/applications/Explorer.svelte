@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { bookmarks } from '$lib/stores/bookmarkStore';
-	import type { Bookmark } from '$lib/stores/bookmarkStore';
+	import { bookmarks } from '$lib/stores';
+	import type { Bookmark } from '$lib/stores';
 
 	interface FileItem {
 		name: string;
@@ -9,8 +9,6 @@
 		content?: string;
 		url?: string;
 	}
-
-	let currentPath: string = 'Projects';
 	let selectedProject: Bookmark | null = null;
 	let fileContent: string | null = null;
 	let history: (Bookmark | null)[] = [null];
@@ -135,7 +133,7 @@
 		{#if !selectedProject}
 			<div class="p-4">
 				<ul>
-					{#each $bookmarks as project}
+					{#each $bookmarks as project (project.name)}
 						<li class="mb-2">
 							<button
 								class="flex w-full items-center gap-2 rounded bg-gray-100 px-3 py-2 text-left transition-colors hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-blue-800"
@@ -151,7 +149,7 @@
 		{:else}
 			<div class="p-4">
 				<ul>
-					{#each getProjectFiles(selectedProject) as file}
+					{#each getProjectFiles(selectedProject) as file (file.name)}
 						<li class="mb-2">
 							<button
 								class="flex w-full items-center gap-2 rounded bg-gray-100 px-3 py-2 text-left transition-colors hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-blue-800"

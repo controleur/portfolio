@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let content = '';
-	import { getIcon } from '$lib/icons';
-	import { bookmarks } from '$lib/stores/bookmarkStore';
+	import { getIcon } from '$lib';
+	import { bookmarks } from '$lib/stores';
 	import { onMount } from 'svelte';
 
 	let currentUrl = '';
@@ -84,7 +84,7 @@
 	<div
 		class="flex gap-2 border-b border-gray-200 bg-gray-100 p-2 dark:border-gray-600 dark:bg-gray-700"
 	>
-		{#each $bookmarks as bookmark}
+		{#each $bookmarks as bookmark (bookmark.name)}
 			<button
 				on:click={() => navigateTo(bookmark.url)}
 				class="rounded bg-white px-3 py-1 text-xs text-gray-700 transition-colors hover:bg-gray-50 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500"

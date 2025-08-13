@@ -4,7 +4,7 @@
 	import QuickActions from './QuickActions.svelte';
 	import StartMenu from './StartMenu.svelte';
 	import { onMount } from 'svelte';
-	import { getCurrentTime, ICONS, getIcon } from '$lib';
+	import { getCurrentTime, getIcon } from '$lib';
 	import {
 		windows,
 		openWindow,

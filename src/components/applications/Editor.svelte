@@ -145,7 +145,7 @@
 					inString = false;
 					buffer += char;
 					// Highlight string
-					result += `<span class=\"text-green-300\">${buffer}</span>`;
+					result += `<span class="text-green-300">${buffer}</span>`;
 					buffer = '';
 				} else {
 					buffer += char;
@@ -154,7 +154,7 @@
 			// Highlight whatever is left
 			if (buffer) {
 				if (inString) {
-					result += `<span class=\"text-green-300\">${buffer}</span>`;
+					result += `<span class="text-green-300">${buffer}</span>`;
 				} else {
 					result += buffer
 						.replace(
@@ -174,7 +174,7 @@
 <div class="flex h-full flex-col bg-gray-900 text-gray-100">
 	<!-- Tab Bar -->
 	<div class="flex border-b border-gray-700 bg-gray-800">
-		{#each files as file, index}
+		{#each files as file, index (file.name)}
 			<button
 				on:click={() => switchFile(index)}
 				class="flex items-center gap-2 border-r border-gray-700 px-4 py-2 text-sm transition-colors {index ===
@@ -195,7 +195,8 @@
 	<div class="flex h-full flex-1 overflow-auto">
 		<!-- Line Numbers -->
 		<div class="flex w-12 flex-col bg-gray-800 pt-4 font-mono text-sm text-gray-500">
-			{#each activeFile.content as line, index}
+			<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+			{#each activeFile.content as _, index (index)}
 				<div class="bg-gray-800 px-2 text-right leading-6">{index + 1}</div>
 			{/each}
 		</div>
@@ -203,7 +204,7 @@
 		<!-- Code Content -->
 		<div class="flex-1">
 			<div class="p-4 font-mono text-sm leading-6">
-				{#each activeFile.content as line}
+				{#each activeFile.content as line, index (index)}
 					<div class="text-gray-200">{@html highlightLine(line, activeFile.language)}</div>
 				{/each}
 			</div>
