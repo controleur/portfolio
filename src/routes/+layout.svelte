@@ -15,7 +15,6 @@
 	} from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { locale, _ } from 'svelte-i18n';
-	let language = 'en';
 
 	let isLoading = true;
 	let contentLoaded = false;
@@ -75,7 +74,6 @@
 	onMount(() => {
 		// Set language from localStorage or default to 'en'
 		const lang = typeof window !== 'undefined' ? localStorage.getItem('language') || 'en' : 'en';
-		language = lang;
 		locale.set(lang);
 
 		// Wait for locale to be ready, then start loading
@@ -84,8 +82,12 @@
 			preloadImages();
 		};
 
-		if (typeof window !== 'undefined' && typeof (window as any).waitLocale === 'function') {
-			(window as any).waitLocale().then(startLoading);
+		if (
+			typeof window !== 'undefined' &&
+			'waitLocale' in window &&
+			typeof (window as { waitLocale?: () => Promise<void> }).waitLocale === 'function'
+		) {
+			(window as { waitLocale: () => Promise<void> }).waitLocale().then(startLoading);
 		} else {
 			let unsubscribe: (() => void) | undefined;
 			unsubscribe = locale.subscribe(function handler(loc) {

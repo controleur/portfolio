@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { bookmarks } from '$lib/stores/bookmarkStore';
-	import type { Bookmark } from '$lib/stores/bookmarkStore';
-	import { _ } from 'svelte-i18n';
-
+	import { bookmarks } from '$lib/stores';
+	import type { Bookmark } from '$lib/stores';
+  import { _ } from 'svelte-i18n';
 	interface FileItem {
 		name: string;
 		type: 'folder' | 'file' | 'link';
@@ -10,8 +9,6 @@
 		content?: string;
 		url?: string;
 	}
-
-	let currentPath: string = 'Projects';
 	let selectedProject: Bookmark | null = null;
 	let fileContent: string | null = null;
 	let history: (Bookmark | null)[] = [null];
@@ -28,11 +25,11 @@
 	function goForward() {
 		if (historyIndex < history.length - 1) {
 			historyIndex++;
+
 			selectedProject = history[historyIndex];
 			fileContent = null;
 		}
 	}
-
 	function getProjectFiles(project: Bookmark): FileItem[] {
 		return [
 			{
@@ -59,7 +56,6 @@
 	}
 
 	function handleFolderClick(project: Bookmark) {
-		// Si on navigue vers un nouveau projet, tronque l'historique
 		if (historyIndex < history.length - 1) {
 			history = history.slice(0, historyIndex + 1);
 		}

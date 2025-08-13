@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ICONS, getIcon } from '$lib/icons';
+	import { getIcon } from '$lib';
 	import { fade, scale } from 'svelte/transition';
 	import { _ } from 'svelte-i18n';
 	export let isLoading: boolean = true;

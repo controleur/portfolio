@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { _ } from 'svelte-i18n';
-
 	let terminalOutput: string[] = [];
-
 	let currentInput = '';
 	let terminalInput: HTMLTextAreaElement;
 	let terminalContainer: HTMLDivElement;
@@ -168,9 +166,9 @@
 	role="button"
 	tabindex="0"
 >
-	<div class="terminal-scroll flex-1 overflow-y-auto" bind:this={terminalContainer}>
+	<div class="flex-1 overflow-y-auto" bind:this={terminalContainer}>
 		<div class="flex h-full min-h-0 flex-col p-4">
-			{#each terminalOutput as line}
+			{#each terminalOutput as line, index (index)}
 				<div class="leading-relaxed whitespace-pre-wrap select-text">{line}</div>
 			{/each}
 
@@ -207,10 +205,3 @@
 		<span class="text-gray-500">{$_('terminal.statusShortcuts')}</span>
 	</div>
 </div>
-
-<style>
-	.terminal-scroll {
-		scrollbar-width: none;
-		scroll-behavior: smooth;
-	}
-</style>

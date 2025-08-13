@@ -8,7 +8,7 @@
 	export let appName: string;
 	export let content: string = '';
 	import type { SvelteComponent } from 'svelte';
-	const components: Record<AppKey, typeof SvelteComponent<any>> = {
+	const components: Record<AppKey, typeof SvelteComponent<Record<string, unknown>>> = {
 		Explorer,
 		Terminal,
 		Browser,
