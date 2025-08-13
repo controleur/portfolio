@@ -63,8 +63,8 @@
 				'"Wallpaper": [',
 				'  "Name": KDE Plasma Wallpaper "Coast",',
 				'  "Author": Krystian Zajdel,',
-				']',
-				'"Design inspiration": KDE Plasma HIG & Figma',
+				'],',
+				'"Design inspiration": KDE Plasma HIG & Figma project',
 				'',
 				'',
 			]
