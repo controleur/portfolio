@@ -1,8 +1,17 @@
 import { writable, derived } from 'svelte/store';
 import type { App } from '$lib';
+import { ICONS } from '$lib';
 import { _ } from 'svelte-i18n';
 
-const baseApps = [
+type BaseApp = {
+	id: number;
+	internalName: string;
+	nameKey: string;
+	icon: keyof typeof ICONS;
+	descriptionKey: string;
+};
+
+const baseApps: BaseApp[] = [
 	{
 		id: 1,
 		internalName: 'Explorer',

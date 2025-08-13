@@ -3,7 +3,7 @@
 	import { getIcon } from '$lib';
 	import { bookmarks } from '$lib/stores';
 	import { onMount } from 'svelte';
-  import { _ } from 'svelte-i18n';
+	import { _ } from 'svelte-i18n';
 	let currentUrl = '';
 	let addressInput = '';
 	let isLoading = false;

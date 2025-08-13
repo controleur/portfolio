@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { bookmarks } from '$lib/stores';
 	import type { Bookmark } from '$lib/stores';
-  import { _ } from 'svelte-i18n';
+	import { _ } from 'svelte-i18n';
 	interface FileItem {
 		name: string;
 		type: 'folder' | 'file' | 'link';

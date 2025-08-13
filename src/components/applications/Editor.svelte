@@ -195,7 +195,6 @@
 	<div class="flex h-full flex-1 overflow-auto">
 		<!-- Line Numbers -->
 		<div class="flex w-12 flex-col bg-gray-800 pt-4 font-mono text-sm text-gray-500">
-
 			<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each activeFile.content as _, index (index)}
 				<div class="bg-gray-800 px-2 text-right leading-6">{index + 1}</div>

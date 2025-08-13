@@ -31,10 +31,10 @@
 
 	// List apps with at least one open window, mark active if focused
 	$: appsWithWindows = availableApps
-		.filter((app) => $windows.some((window) => window.appName === app.name))
+		.filter((app) => $windows.some((window) => window.appName === app.internalName))
 		.map((app) => ({
 			...app,
-			isActive: $windows.some((window) => window.appName === app.name && window.isActive)
+			isActive: $windows.some((window) => window.appName === app.internalName && window.isActive)
 		}));
 	onMount(() => {
 		const interval = setInterval(() => {
@@ -62,7 +62,7 @@
 	function handleAppClick(appId: number): void {
 		const app = availableApps.find((a) => a.id === appId);
 		if (!app) return;
-		const appWindows = $windows.filter((w) => w.appName === app.name);
+		const appWindows = $windows.filter((w) => w.appName === app.internalName);
 		const minimized = appWindows.filter((w) => w.isMinimized);
 		const opened = appWindows.filter((w) => !w.isMinimized);
 
