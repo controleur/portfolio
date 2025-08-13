@@ -30,7 +30,7 @@
 		"backToHome": "Back to Home"
 	},
 	"terminal": {
-		"welcome": "Welcome to Portfolio Terminal!",
+		"welcome": "Welcome to Portfoli.OS Terminal!",
 		"helpHint": "Type \"help\" to see available commands.",
 		"commandNotFound": "command not found",
 		"helpTitle": "Available commands:",

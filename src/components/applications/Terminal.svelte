@@ -1,15 +1,24 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { _ } from 'svelte-i18n';
+	import { _, locale } from 'svelte-i18n';
+
 	let terminalOutput: string[] = [];
 	let currentInput = '';
 	let terminalInput: HTMLTextAreaElement;
 	let terminalContainer: HTMLDivElement;
 
-	onMount(() => {
-		// Initialize with localized welcome message
-		terminalOutput = [$_('terminal.welcome'), $_('terminal.about'), $_('terminal.helpHint'), ''];
+	// Réinitialise le header du terminal à chaque changement de langue
+	$: {
+		// Si pas de commande utilisateur, on affiche le header traduit
+		if (terminalOutput.length === 0 || terminalOutput.every(l => l === '' || l.startsWith('user@portfolio:~$') === false)) {
+			terminalOutput = [$_('terminal.welcome'), $_('terminal.about'), $_('terminal.helpHint'), ''];
+		}
+	}
 
+
+	onMount(() => {
+		// Initialisation : header traduit
+		terminalOutput = [$_('terminal.welcome'), $_('terminal.about'), $_('terminal.helpHint'), ''];
 		if (terminalInput) {
 			terminalInput.focus();
 		}
@@ -104,7 +113,7 @@
 			case 'date':
 				terminalOutput = [
 					...terminalOutput,
-					new Date().toLocaleString('en-US', {
+					new Date().toLocaleString($locale ?? 'fr-FR', {
 						weekday: 'long',
 						year: 'numeric',
 						month: 'long',
