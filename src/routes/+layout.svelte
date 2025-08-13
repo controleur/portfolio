@@ -40,7 +40,7 @@
 	// Preload images (optimized)
 	const preloadImages = () => {
 		loadingText = $_('loading.wallpaper');
-		const imageUrls = ['/wallpapers/images/5120x2880.png', '/wallpapers/images_dark/5120x2880.png'];
+		const imageUrls = ['/wallpapers/light.webp', '/wallpapers/dark.webp'];
 
 		Promise.all(
 			imageUrls.map((url) => {
@@ -107,7 +107,7 @@
 
 {#if contentLoaded}
 	<div
-		class="min-h-screen bg-[url(/wallpapers/images/5120x2880.png)] bg-center transition-opacity duration-500 dark:bg-[url(/wallpapers/images_dark/5120x2880.png)]"
+		class="min-h-screen bg-[url(/wallpapers/light.webp)] bg-center transition-opacity duration-500 dark:bg-[url(/wallpapers/dark.webp)]"
 		class:opacity-100={!isLoading}
 		class:opacity-0={isLoading}
 	>
