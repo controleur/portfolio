@@ -105,8 +105,8 @@
 					<p class="text-gray-600 dark:text-gray-400">{$_('browser.loading')}</p>
 				</div>
 			</div>
-		{:else if currentUrl === 'https://portfolio.dev'}
-			<iframe src="http://mael.tailored.agency/" title="This Portfolio" class="h-full w-full border-0"
+		{:else if currentUrl === 'https://mael.tailored.agency/'}
+			<iframe src="https://mael.tailored.agency/" title="This Portfolio" class="h-full w-full border-0"
 			></iframe>
 		{:else if currentUrl === 'https://studio.ivory-app.com'}
 			<iframe
