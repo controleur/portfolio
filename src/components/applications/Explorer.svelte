@@ -9,7 +9,6 @@
 		content?: string;
 		url?: string;
 	}
-
 	let selectedProject: Bookmark | null = null;
 	let fileContent: string | null = null;
 	let history: (Bookmark | null)[] = [null];
