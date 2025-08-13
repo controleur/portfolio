@@ -106,7 +106,7 @@
 				</div>
 			</div>
 		{:else if currentUrl === 'https://mael.tailored.agency/'}
-			<iframe src="https://mael.tailored.agency/" title="This Portfolio" class="h-full w-full border-0"
+			<iframe src="https://localhost/" title="This Portfolio" class="h-full w-full border-0"
 			></iframe>
 		{:else if currentUrl === 'https://studio.ivory-app.com'}
 			<iframe
@@ -148,7 +148,7 @@
 						{$_('browser.pageNotFoundDescription')}
 					</p>
 					<button
-						on:click={() => navigateTo('https://svelte.dev')}
+						on:click={() => navigateTo('https://controleur.github.io/booki/')}
 						class="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
 					>
 						{$_('browser.backToHome')}
