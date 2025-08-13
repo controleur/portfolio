@@ -11,7 +11,7 @@ export interface Bookmark {
 export const bookmarks = writable<Bookmark[]>([
 		{
 			name: 'Portfolio ⭐',
-			url: 'https://portfolio.dev',
+			url: 'https://mael.tailored.agency/',
 			github: 'https://github.com/controleur/portfolio',
 			description_en: 'This is my personal portfolio built with SvelteKit, Tailwind CSS, and other modern web technologies. This project helped me to understand how Svelte and SvelteKit work, as well as to get to know Tailwind CSS. Since I am based outside of France, I also had to implement a solution for internationalization.',
 			description_fr: 'Portfolio personnel construit avec SvelteKit, Tailwind CSS et d\'autres technologies web modernes. Ce projet m\'a aidé à comprendre comment Svelte et SvelteKit fonctionnent, ainsi qu\'à découvrir Tailwind CSS. Puisque je suis basé hors de France, j\'ai également dû implémenter une solution pour l\'internationalisation.'

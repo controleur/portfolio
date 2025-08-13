@@ -7,6 +7,7 @@
 	let currentUrl = '';
 	let addressInput = '';
 	let isLoading = false;
+	$: currentBookmark = $bookmarks.find(b => b.url === currentUrl);
 
 	onMount(() => {
 		currentUrl = content || 'https://controleur.github.io/booki/';
@@ -94,50 +95,18 @@
 		{/each}
 	</div>
 
-	<!-- Content Area -->
-	<div class="flex-1 overflow-auto">
-		{#if isLoading}
-			<div class="flex h-full items-center justify-center">
-				<div class="text-center">
-					<div
-						class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
-					></div>
-					<p class="text-gray-600 dark:text-gray-400">{$_('browser.loading')}</p>
-				</div>
+	{#if isLoading}
+		<div class="flex h-full items-center justify-center">
+			<div class="text-center">
+				<div
+					class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+				></div>
+				<p class="text-gray-600 dark:text-gray-400">{$_('browser.loading')}</p>
 			</div>
-		{:else if currentUrl === 'https://mael.tailored.agency/'}
-			<iframe src="https://localhost/" title="This Portfolio" class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://studio.ivory-app.com'}
-			<iframe
-				src="https://studio.ivory-app.com"
-				title="Ivory Landing Page"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://controleur.github.io/nina-carducci/'}
-			<iframe
-				src="https://controleur.github.io/nina-carducci/"
-				title="Nina Carducci"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://controleur.github.io/booki/'}
-			<iframe src="https://controleur.github.io/booki/" title="Booki" class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://sophie-bluel-five.vercel.app/'}
-			<iframe
-				src="https://sophie-bluel-five.vercel.app/"
-				title="Sophie Bluel's Portfolio"
-				class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://kasa-five-ebon.vercel.app/'}
-			<iframe src="https://kasa-five-ebon.vercel.app/" title="Kasa" class="h-full w-full border-0"
-			></iframe>
-		{:else if currentUrl === 'https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs'}
-			<iframe
-				src="https://mon-vieux-grimoire-backend-pi.vercel.app/api-docs"
-				title="Mon Vieux Grimoire API Docs"
-				class="h-full w-full border-0"
-			></iframe>
+		</div>
+	{:else}
+		{#if currentBookmark}
+			<iframe src={currentBookmark.url} title={currentBookmark.name} class="h-full w-full border-0"></iframe>
 		{:else}
 			<div class="flex h-full items-center justify-center">
 				<div class="text-center">
@@ -156,5 +125,5 @@
 				</div>
 			</div>
 		{/if}
-	</div>
+	{/if}
 </div>
