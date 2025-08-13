@@ -39,20 +39,6 @@ const baseApps: BaseApp[] = [
 		nameKey: 'apps.editor.name',
 		icon: 'editor',
 		descriptionKey: 'apps.editor.description'
-	},
-	{
-		id: 5,
-		internalName: 'Settings',
-		nameKey: 'apps.settings.name',
-		icon: 'settings',
-		descriptionKey: 'apps.settings.description'
-	},
-	{
-		id: 6,
-		internalName: 'About',
-		nameKey: 'apps.about.name',
-		icon: 'about',
-		descriptionKey: 'apps.about.description'
 	}
 ];
 
@@ -73,21 +59,7 @@ const fallbackApps: App[] = [
 		description: 'Command line access',
 		internalName: 'Terminal'
 	},
-	{ id: 4, name: 'Editor', icon: 'editor', description: 'Edit your code', internalName: 'Editor' },
-	{
-		id: 5,
-		name: 'Settings',
-		icon: 'settings',
-		description: 'Configure your system',
-		internalName: 'Settings'
-	},
-	{
-		id: 6,
-		name: 'About',
-		icon: 'about',
-		description: 'Learn more about this project',
-		internalName: 'About'
-	}
+	{ id: 4, name: 'Editor', icon: 'editor', description: 'Edit your code', internalName: 'Editor' }
 ];
 
 export const apps = derived(_, ($_) => {
